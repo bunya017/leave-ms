@@ -8,11 +8,20 @@
   <body>
     <?php
       require("config.php");
-      $email = stripcslashes($_POST["email"]);
-      $password = password_hash(
-        stripcslashes($_POST["password"]), PASSWORD_DEFAULT
-      );
-      $query = "SELECT * FROM `users` WHERE email='$email' and password='$password'"
+      if (isset($_POST["submit"])) {
+        $username = stripcslashes($_POST["username"]);
+        $password = stripcslashes($_POST["password"]);
+        $query = "SELECT * FROM `users` WHERE username='$username'";
+        $result = $conn->query($query);
+        if ($result->num_rows > 0) {
+          $row = $result->fetch_assoc();
+          if (password_verify($password, $row["password"]) === TRUE) {
+            echo "Logged in<br>";
+          } else {
+            echo "Not found<br>";
+          }
+        }
+      }
     ?>
     <div>
       <img src="media/ICICT.jpg" alt="LOGO" class="logo">
@@ -21,23 +30,23 @@
       <div class="nav_container">
         <ul class="navbar">
           <li><a href="home.html">Home</a></li>
-          <li><a href="register.html">Register</a></li>
+          <li><a href="register.php">Register</a></li>
           <li><a href="About_Us.html">About Us</a></li>
           <li><a href="">Contact Us</a></li>
         </ul>
       </div>
       </br>
       <!-- Login form --> 
-      <form class="form">
+      <form class="form" method="post">
         <div class="top_container">
         </div>
         <div class="content">
           <div class="top_login">
             <h1>Employee Login</h1>
           </div>  
-          <input type="email" required="" name="email" placeholder="Email" class="input">
+          <input type="tex" required="" name="username" placeholder="Username" class="input">
           <input type="password" required="" name="password" placeholder="Password" class="input">
-          <button class="button" type="Submit" name="submit">Submit</button>
+          <button class="button" type="submit" name="submit">Submit</button>
         </div>
       </form>
     </div>

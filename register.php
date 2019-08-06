@@ -26,9 +26,9 @@
         <div class="top_login">
           <h1>Register Here</h1>
         </div>
-        <input type="text" name="text" placeholder="username" class="input">
-        <input type="email" name="email" placeholder="Email" class="input">
-        <input type="password" name="password" placeholder="Password" class="input">
+        <input type="text" required="" name="username" placeholder="Username" class="input">
+        <input type="email" required="" name="email" placeholder="Email" class="input">
+        <input type="password" required="" name="password" placeholder="Password" class="input">
         <button class="button" type="submit">Submit</button>
       </div>
     </form>

@@ -28,9 +28,9 @@
           <div class="top_login">
             <h1>Employee Login</h1>
           </div>  
-          <input type="email" placeholder="Email" class="input">
-          <input type="email" placeholder="Password" class="input">
-          <button class="button">Submit</button>
+          <input type="email" required="" name="email" placeholder="Email" class="input">
+          <input type="password" required="" name="password" placeholder="Password" class="input">
+          <button class="button" type="Submit" name="submit">Submit</button>
         </div>
       </form>
     </div>

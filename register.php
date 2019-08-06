@@ -31,7 +31,7 @@
       <ul class="navbar">
         <li><a href="home.html">Home</a></li>
         
-        <li><a href="register.html" class="regester">Register</a></li>
+        <li><a href="register.php" class="regester">Register</a></li>
         <li><a href="About_Us.html">About Us</a></li>
         <li><a href="">Contact Us</a></li>
       </ul>

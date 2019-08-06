@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
   </head>
   <body>
+    <?php
+    require("config.php");
+    ?>
     <div>
       <img src="media/ICICT.jpg" alt="LOGO" class="logo">
       </div>  

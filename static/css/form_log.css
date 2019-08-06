@@ -95,11 +95,11 @@ li>a:hover{
 }
 
 .content{
-	padding: 30px;
+	padding: 10px;
 	background: #eeeeee;
 }
 .top_login{
-	margin-bottom: 15px;
+	padding-bottom: 20px;
 	text-align: center;
 	color: #333333;
 }

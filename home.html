@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Form</title>
+<link rel="stylesheet" href="static/css/style.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+
+</head>
+<body>
+  <div>
+  	<img src="media/ICICT.jpg" alt="LOGO" class="logo">
+  </div>	
+  <div class="nav_container">
+  	<ul class="navbar">
+  		<li><a href="" class="home">Home</a></li>
+  		
+  		<li><a href="register.html">Register</a></li>
+		<li><a href="">Contact Us</a></li>
+		<li><a href="About_Us.html">About Us</a></li>
+  	</ul>
+	<div class="time">
+<p id="Caption" class="clock">  </p>
+</div>
+  </div>
+ </br> 
+  		
+
+ <div class="entire">
+  <div class="side_nav">
+  
+
+	<a href="admin-login.html"><button class="btn">Admin Login</button></a>
+	<br>
+  	<a href="employee_login.html"><button class="btn">Employee Login</button></a>
+	<br>
+    <a href="recovery_password.html"><button class="btn"> Employee Password Recovery</button></a>
+
+</div>
+
+  <div class="main">
+  <h1 align="center">IYA ABUBAKAR COMPUTER CENTER  </h1>
+   <p>CHAPTER ONE
+1.0                                               INTRODUCTION
+1.1  Background Of The  Study
+With the rise of Globalization, it has become essential to find an easier and move effective system to help an organization. Regardless of this, there are still some establishments that use the old-fashioned way. In a certain way, one thing that is still processed manually is the leave management system. In modern times, there are many types of leave available to members of staff of an organization e.g. annual leave, casual leave, study leave and many more. A lot of time and resources are allocated in managing this kind of system especially when managed manually. Nucleus Research is one of the leading research  institute, aimed at measuring the value of technology. In one of its publication "Leave management cutting cost", the benefits of having an automated leave management system were outlined.
+Leave management system is a computerized online platform that encircles all kind of leave applications and approval, and the process to record all types of leaves. This system can be used to automate the workflow of leave applications and their approvals. It is simple and easy to use a system that eliminates paper work, saves time and money.
+However, in Institute of Computing And ICT A.B.U Zaria, the process of treating leave applications approval, and record keeping is managed using the manual system.
+But a challenge that exists is wastage of time and energy. Till today, when managers and employees have to manually calculate leave balances. The numerous process involved makes it labour intensive and serve as a major distraction from other job duties.
+A web based automated Leave Management System for ICICT A.B.U Zaria is aimed at automating the manual system currently used by the organization to manage its staff leave applications and records.
+The proposed system will minimize most of the problems currently faced by the organization in managing leave applications. The manual system will be automated by making it an online process. Automation  of this system will promote flexibility and enhance productivity.
+
+
+</p>
+  </div>
+  </div>
+	
+
+<script>
+	var today = new Date();
+	var days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+	var month = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"]; 
+	var currentTime = new Date();
+	var h = currentTime.getHours();
+	var m = currentTime.getMinutes();
+	var s = currentTime.getSeconds();
+	document.getElementById("Caption").innerHTML =  days[today.getDay()] + ", " + month[today.getMonth()] + ", " + today.getFullYear();
+</script>
+
+</body>
+</html>

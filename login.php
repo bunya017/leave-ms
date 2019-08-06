@@ -7,11 +7,17 @@
   </head>
   <body>
     <?php
-    require("config.php");
+      require("config.php");
+      $email = stripcslashes($_POST["email"]);
+      $password = password_hash(
+        stripcslashes($_POST["password"]), PASSWORD_DEFAULT
+      );
+      $query = "SELECT * FROM `users` WHERE email='$email' and password='$password'"
     ?>
     <div>
       <img src="media/ICICT.jpg" alt="LOGO" class="logo">
-      </div>  
+      </div>
+      <!-- Nav -->
       <div class="nav_container">
         <ul class="navbar">
           <li><a href="home.html">Home</a></li>
@@ -20,7 +26,8 @@
           <li><a href="">Contact Us</a></li>
         </ul>
       </div>
-      </br> 
+      </br>
+      <!-- Login form --> 
       <form class="form">
         <div class="top_container">
         </div>

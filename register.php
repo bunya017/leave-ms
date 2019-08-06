@@ -19,14 +19,14 @@
       </ul>
     </div>
     </br> 
-    <form class="form">
+    <form class="form" method="post">
       <div class="content">
         <div class="top_login">
           <h1>Register Here</h1>
         </div>
-        <input type="text" placeholder="username" class="input">
-        <input type="email" placeholder="Email" class="input">
-        <input type="password" placeholder="Password" class="input">
+        <input type="text" name="text" placeholder="username" class="input">
+        <input type="email" name="email" placeholder="Email" class="input">
+        <input type="password" name="password" placeholder="Password" class="input">
         <button class="button">Submit</button>
         <div class="link">
         </div>

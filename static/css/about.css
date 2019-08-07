@@ -1,7 +1,6 @@
- body{
-	 
-	 background-image: url('../../media/icic.jpg');
-	 background-size:cover ;
-	 background-repeat: no-repeat;
-	 background-size:fixed;
-		          }
+ body {
+  background-image: url('../../media/icic.jpg');
+  background-size: cover ;
+  background-repeat: no-repeat;
+  background-size: fixed;
+}

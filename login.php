@@ -30,9 +30,8 @@
       <div class="nav_container">
         <ul class="navbar">
           <li><a href="home.html">Home</a></li>
-          <li><a href="register.php">Register</a></li>
+          <li><a href="login.php">Login</a></li>
           <li><a href="About_Us.html">About Us</a></li>
-          <li><a href="">Contact Us</a></li>
         </ul>
       </div>
       </br>

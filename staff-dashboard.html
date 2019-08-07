@@ -14,29 +14,29 @@
       <div class="row">
         <div class="col-10 mx-auto">
 
-          <!-- Title -->
+          <!-- Dashboard Cards -->
           <div class="row align-items-center py-3">
             <h1>Dashboard</h1>
           </div>
           <div class="row align-items-center py-3">
             <div class="col-12 col-sm-6 col-lg-3 py-2 py-lg-0">
               <div class="card shadow-lg" style="min-height: 100px;">
-                <div class="card-body">Apply for Leave</div>
+                <div class="card-body">30 Leave Days Left</div>
               </div>
             </div>
             <div class="col-12 col-sm-6 col-lg-3 py-2 py-lg-0">
               <div class="card shadow-lg" style="min-height: 100px;">
-                <div class="card-body">Leave Approval</div>
+                <div class="card-body">1 Leave Approved</div>
               </div>
             </div>
             <div class="col-12 col-sm-6 col-lg-3 py-2 py-lg-0">
               <div class="card shadow-lg" style="min-height: 100px;">
-                <div class="card-body">LEAVE DAYS LEFT </div>
+                <div class="card-body">1 Pending Approval</div>
               </div>
             </div>
             <div class="col-12 col-sm-6 col-lg-3 py-2 py-lg-0">
               <div class="card shadow-lg" style="min-height: 100px;">
-                <div class="card-body">LEAVE DAYS USED</div>
+                <div class="card-body">1 Leave Disapproved</div>
               </div>
             </div>
           </div>
@@ -125,12 +125,16 @@
                     <div class="col-11 mx-auto">
                       <form>
                         <div class="form-group">
+                          <label>Period <small>(in days)</small>:</label>
+                          <input type="number" class="form-control">
+                        </div>
+                        <div class="form-group">
                           <label>Purpose:</label>
                           <input type="text" class="form-control">
                         </div>
                         <div class="form-group">
-                          <label>Period <small>(in days)</small>:</label>
-                          <input type="number" class="form-control">
+                          <label>Extra information:</label>
+                          <textarea class="form-control" rows="3"></textarea>
                         </div>
                         <!-- Modal footer -->
                         <div class="modal-footer border-0">

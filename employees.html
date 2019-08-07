@@ -21,10 +21,53 @@
               <h2>Employees</h2>
             </div>
             <div class="col-6">
-              <button type="button" class="btn btn-dark float-right">
+              <button type="button" class="btn btn-dark float-right" data-toggle="modal" data-target="#newLeaveModal">
                 Add Employee
               </button>
             </div>
+          </div>
+
+          <!-- Leave list -->
+          <div class="row">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Username</th>
+                  <th>Full Name</th>
+                  <th>Department</th>
+                  <th>Added on</th>
+                  <th>Status</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>janemikel</td>
+                  <td>Jane Mikel</td>
+                  <td>
+                    <abbr title="Computer Science">COSC</abbr>
+                  </td>
+                  <td>25-Jan-2016</td>
+                  <td><span class="badge badge-success">Active</span></td>
+                  <td><button type="button" class="btn btn-outline-dark btn-sm" data-toggle="modal" data-target="#viewLeaveDetail">View</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>johnmikel</td>
+                  <td>John Mikel</td>
+                  <td>
+                    <abbr title="Computer Engineering">COEN</abbr>
+                  </td>
+                  <td>14-Jul-2016</td>
+                  <td><span class="badge badge-danger">Inactive</span></td>
+                  <td><button type="button" class="btn btn-outline-dark btn-sm" data-toggle="modal" data-target="#viewLeaveDetail">View</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

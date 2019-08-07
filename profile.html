@@ -10,6 +10,14 @@
     <script src="static/js/bootstrap.min.js"></script>
   </head>
   <body>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+      <a class="navbar-brand ml-auto" href="staff-dashboard.html">Leave MS</a>
+      <ul class="navbar-nav offset-md-8 offset-1 mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="">My profile</a>
+        </li>
+      </ul>
+    </nav>
     <div class="container">
       <div class="row">
         <div class="col-10 mx-auto">
@@ -21,10 +29,10 @@
                   <h2>
                     Profile Details
                     <div class="float-right">
-                      <button class="btn btn-outline-primary mx-1" data-toggle="modal" data-target="#profileUpdateModal">
+                      <button class="btn btn-outline-dark mx-1" data-toggle="modal" data-target="#profileUpdateModal">
                         Edit Profile
                       </button>
-                      <button class="btn btn-outline-primary mx-1" data-toggle="modal" data-target="#passwordChangeModal">
+                      <button class="btn btn-outline-dark mx-1" data-toggle="modal" data-target="#passwordChangeModal">
                         Change Password
                       </button>
                     </div>
@@ -113,7 +121,7 @@
                           <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
                             Cancel
                           </button>
-                          <button type="button" class="btn btn-primary" data-dismiss="modal">
+                          <button type="button" class="btn btn-dark" data-dismiss="modal">
                             Update
                           </button>
                         </div>
@@ -152,7 +160,7 @@
                           <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
                             Cancel
                           </button>
-                          <button type="button" class="btn btn-primary" data-dismiss="modal">
+                          <button type="button" class="btn btn-dark" data-dismiss="modal">
                             Change
                           </button>
                         </div>
@@ -167,4 +175,9 @@
       </div>
     </div>
   </body>
+  <style>
+    body {
+      background-color: #f4f3f4 !important;
+    }
+  </style>
 </html>

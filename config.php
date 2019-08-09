@@ -2,7 +2,7 @@
   $servername = "localhost";
   $username = "root";
   $password = "";
-  $database = "emls_db";
+  $database = "leaveMs_db";
   $conn = new mysqli($servername, $username, $password, $database);
   if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);

@@ -30,6 +30,7 @@
             if (password_verify($password, $row["password"]) === TRUE) {
               $_SESSION["first_name"] = $row["first_name"];
               $_SESSION["last_name"] = $row["last_name"];
+              $_SESSION["staff_pin"] = $row["staff_pin"];
               $role_id = $row["role_id"];
               $role_sql = "SELECT * FROM `roles` WHERE id='$role_id'";
               $role_query = $conn->query($role_sql);
@@ -40,7 +41,7 @@
               if ($role_row["name"] === "staff") {
                 header("location: staff/dashboard.html");
               } elseif ($role_row["name"] === "director" or "registrar" or "head_ict") {
-                header("location: admin/employee-leave.html");
+                header("location: admin/dashboard.php");
               } else {
                 echo $conn->connect_error . "<br>";
               }

@@ -29,7 +29,7 @@
                     </div>
                     <div class="form-group">
                       <label>Password:</label>
-                      <input type="text" class="form-control">
+                      <input type="password" class="form-control">
                     </div>
                     <div class="py-3">
                       <button class="col-6 btn btn-dark">Login</button>

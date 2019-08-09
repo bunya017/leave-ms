@@ -45,10 +45,12 @@
                 echo $conn->connect_error . "<br>";
               }
             } else {
-              $_SESSION["loginFailed"] = true;
+              $_SESSION["loginError"] = true;
+              session_destroy();
             }
           } else {
-            var_dump($result);
+            $_SESSION["loginError"] = true;
+            session_destroy();
           }
         }
       }
@@ -66,27 +68,34 @@
               <div>
                 <h3 class="text-center">Login</h3>
               </div>
+              <?php
+                if (isset($_SESSION["loginError"])) {
+                  if ($_SESSION["loginError"] === true) {
+                    echo '<div class="alert alert-danger mt-4 alert-dismissible text-center"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>Incorrect email or password!</strong></div>';
+                  }
+                }
+              ?>
               <div class="row pb-5 pt-4">
                 <div class="col-11 mx-auto">
                   <form method="post">
                     <div class="form-group">
                       <label>Email:</label>
-                      <input type="email" name="email" value="<?php if (isset($_POST['email'])) {echo($_POST['email']);} ?>" class="form-control">
+                      <input type="email" name="email" required="" value="<?php if (isset($_POST['email'])) {echo($_POST['email']);} ?>" class="form-control">
                       <?php
                         if (isset($_SESSION["emailError"])) {
                           if ($_SESSION["emailError"] === true) {
-                            echo '<small class="text-danger">This field is required!</small>';
+                            echo '<small class="text-danger"><strong>This field is required!</strong></small>';
                           }
                         }
                       ?>
                     </div>
                     <div class="form-group">
                       <label>Password:</label>
-                      <input type="password" name="password" class="form-control">
+                      <input type="password" name="password" required="" class="form-control">
                       <?php
                         if (isset($_SESSION["passwordError"])) {
                           if ($_SESSION["passwordError"] === true) {
-                            echo '<small class="text-danger">This field is required!</small>';
+                            echo '<small class="text-danger"><strong>This field is required!</strong></small>';
                           }
                         }
                       ?>

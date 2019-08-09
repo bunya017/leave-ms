@@ -8,7 +8,7 @@
   </head>
   <body>
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-      <a class="navbar-brand ml-5" href="index.html">
+      <a class="navbar-brand ml-5" href="">
         Leave MS
       </a>
     </nav>
@@ -22,17 +22,19 @@
               </div>
               <div class="row py-5">
                 <div class="col-11 mx-auto">
-                  <form>
+                  <form method="post">
                     <div class="form-group">
                       <label>Email:</label>
-                      <input type="text" class="form-control">
+                      <input type="email" name="email" class="form-control">
                     </div>
                     <div class="form-group">
                       <label>Password:</label>
-                      <input type="password" class="form-control">
+                      <input type="password" name="password" class="form-control">
                     </div>
                     <div class="py-3">
-                      <button class="col-6 btn btn-dark">Login</button>
+                      <button class="col-6 btn btn-dark" name="submit">
+                        LOGIN
+                      </button>
                     </div>
                   </form>
                 </div>

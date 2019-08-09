@@ -10,8 +10,12 @@
     <script src="../static/js/bootstrap.min.js"></script>
   </head>
   <body>
+    <?php
+      session_start();
+      var_dump($_SESSION);
+    ?>
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-      <a class="navbar-brand ml-auto" href="employee-leave.html">
+      <a class="navbar-brand ml-auto" href="dashboard.php">
         Leave MS <span class="badge badge-info">Admin</span>
       </a>
       <ul class="navbar-nav offset-md-6 offset-1 mr-auto">

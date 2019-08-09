@@ -26,7 +26,7 @@
           <a class="nav-link" href="">Leave Applications</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="departments.html">Departments</a>
+          <a class="nav-link" href="departments.php">Departments</a>
         </li>
       </ul>
     </nav>

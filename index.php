@@ -14,31 +14,41 @@
       session_start();
       require("config.php");
       if (isset($_POST["submit"])) {
-        $email = stripcslashes($_POST["email"]);
-        $password = stripcslashes($_POST["password"]);
-        $query = "SELECT * FROM `users` WHERE email='$email'";
-        $result = $conn->query($query);
-        if ($result->num_rows > 0) {
-          $row = $result->fetch_assoc();
-          if (password_verify($password, $row["password"]) === TRUE) {
-            $_SESSION["first_name"] = $row["first_name"];
-            $_SESSION["last_name"] = $row["last_name"];
-            $role_id = $row["role_id"];
-            $role_sql = "SELECT * FROM `roles` WHERE id='$role_id'";
-            $role_query = $conn->query($role_sql);
-            $role_row = $role_query->fetch_assoc();
-            $_SESSION["role"] = $role_row["name"];
-            $_SESSION["can_forward_to_director"] = $role_row["can_forward_to_director"];
-            $_SESSION["can_forward_to_registrar"] = $role_row["can_forward_to_registrar"];
-            if ($role_row["name"] === "staff") {
-              header("location: staff/dashboard.html");
-            } elseif ($role_row["name"] === "director" or "registrar" or "head_ict") {
-              header("location: admin/employee-leave.html");
+        if (empty($_POST["email"]) === TRUE) {
+          $_SESSION["emailError"] = true;
+          session_destroy();
+        } elseif (empty($_POST["password"]) === TRUE) {
+          $_SESSION["passwordError"] = true;
+          session_destroy();
+        } elseif (isset($_POST["email"]) === TRUE and isset($_POST["email"]) === TRUE) {
+          $email = stripcslashes($_POST["email"]);
+          $password = stripcslashes($_POST["password"]);
+          $query = "SELECT * FROM `users` WHERE email='$email'";
+          $result = $conn->query($query);
+          if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            if (password_verify($password, $row["password"]) === TRUE) {
+              $_SESSION["first_name"] = $row["first_name"];
+              $_SESSION["last_name"] = $row["last_name"];
+              $role_id = $row["role_id"];
+              $role_sql = "SELECT * FROM `roles` WHERE id='$role_id'";
+              $role_query = $conn->query($role_sql);
+              $role_row = $role_query->fetch_assoc();
+              $_SESSION["role"] = $role_row["name"];
+              $_SESSION["can_forward_to_director"] = $role_row["can_forward_to_director"];
+              $_SESSION["can_forward_to_registrar"] = $role_row["can_forward_to_registrar"];
+              if ($role_row["name"] === "staff") {
+                header("location: staff/dashboard.html");
+              } elseif ($role_row["name"] === "director" or "registrar" or "head_ict") {
+                header("location: admin/employee-leave.html");
+              } else {
+                echo $conn->connect_error . "<br>";
+              }
             } else {
-              echo $conn->connect_error . "<br>";
+              $_SESSION["loginFailed"] = true;
             }
           } else {
-            $_SESSION["loginFailed"] = true;
+            var_dump($result);
           }
         }
       }
@@ -61,11 +71,25 @@
                   <form method="post">
                     <div class="form-group">
                       <label>Email:</label>
-                      <input type="email" name="email" class="form-control">
+                      <input type="email" name="email" value="<?php if (isset($_POST['email'])) {echo($_POST['email']);} ?>" class="form-control">
+                      <?php
+                        if (isset($_SESSION["emailError"])) {
+                          if ($_SESSION["emailError"] === true) {
+                            echo '<small class="text-danger">This field is required!</small>';
+                          }
+                        }
+                      ?>
                     </div>
                     <div class="form-group">
                       <label>Password:</label>
                       <input type="password" name="password" class="form-control">
+                      <?php
+                        if (isset($_SESSION["passwordError"])) {
+                          if ($_SESSION["passwordError"] === true) {
+                            echo '<small class="text-danger">This field is required!</small>';
+                          }
+                        }
+                      ?>
                     </div>
                     <div class="py-3">
                       <button class="col-6 btn btn-dark" name="submit">

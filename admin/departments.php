@@ -49,7 +49,7 @@
           <a class="nav-link" href="employees.html">Employees</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="employee-leave.html">Leave Applications</a>
+          <a class="nav-link" href="dashboard.php">Leave Applications</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="">Departments</a>

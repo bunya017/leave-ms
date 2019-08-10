@@ -1,3 +1,11 @@
+<?php
+    session_start();
+    require("../config.php");
+    if (isset($_SESSION["isLoggedIn"]) and ($_SESSION["isLoggedIn"] === TRUE)) {
+      $query = "SELECT * FROM `departments`";
+      $result = $conn->query($query);
+    }
+?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -104,23 +112,32 @@
                       <form>
                         <div class="form-group">
                           <label>Staff Pin:</label>
-                          <input type="text" class="form-control">
+                          <input type="text" name="staff_pin" class="form-control">
                         </div>
                         <div class="form-group">
                           <label>Email:</label>
-                          <input type="text" class="form-control">
+                          <input type="text" name="email" class="form-control">
                         </div>
                         <div class="form-group">
                           <label>First Name:</label>
-                          <input type="text" class="form-control">
+                          <input type="text" name="first_name" class="form-control">
                         </div>
                         <div class="form-group">
                           <label>Last Name:</label>
-                          <input type="text" class="form-control">
+                          <input type="text" name="last_name" class="form-control">
                         </div>
                         <div class="form-group">
                           <label>Department:</label>
-                          <input type="text" class="form-control">
+                          <select class="form-control" name="department">
+                            <option>-- Choose Department --</option>
+                            <?php
+                              if ($result->num_rows > 0) {
+                                while ($row = $result->fetch_assoc()) {
+                                  echo '<option value="' . $row["id"] . '">' . $row["name"] . '</option>';
+                                }
+                              }
+                            ?>
+                          </select>
                         </div>
                         <!-- Modal footer -->
                         <div class="modal-footer border-0">

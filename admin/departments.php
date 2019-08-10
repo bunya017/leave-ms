@@ -62,6 +62,7 @@
               </thead>
               <tbody>
                 <?php
+                // Show Departments
                   if ($result->num_rows > 0) {
                     $index = 0;
                     while ($row = $result->fetch_assoc()) {
@@ -87,21 +88,21 @@
                 <div class="modal-body">
                   <div class="row">
                     <div class="col-11 mx-auto">
-                      <form>
+                      <form method="post">
                         <div class="form-group">
                           <label>Name:</label>
-                          <input type="text" class="form-control">
+                          <input type="text" name="name" class="form-control">
                         </div>
                         <div class="form-group">
                           <label>Short Code:</label>
-                          <input type="text" class="form-control">
+                          <input type="text" name="shortCode" class="form-control">
                         </div>
                         <!-- Modal footer -->
                         <div class="modal-footer border-0">
                           <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
                             CANCEL
                           </button>
-                          <button type="button" class="btn btn-dark" data-dismiss="modal">
+                          <button class="btn btn-dark" name="addDepartment">
                             ADD DEPARTMENT
                           </button>
                         </div>

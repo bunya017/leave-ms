@@ -76,6 +76,18 @@
           </div>
 
           <!-- Add Employee Modal -->
+          <?php
+            if (isset($_POST["addDepartment"])) {
+              if ((empty($_POST["name"]) === TRUE) and (empty($_POST["shortCode"]) === TRUE)) {
+                $_SESSION["deptNameError"] = true;
+                $_SESSION["shortCodeError"] = true;
+              } elseif (empty($_POST["shortCode"]) === TRUE) {
+                $_SESSION["shortCodeError"] = true;
+              } elseif (empty($_POST["name"]) === TRUE) {
+                $_SESSION["deptNameError"] = true;
+              }
+            }
+          ?>
           <div class="modal" id="addDepartmentModal" data-backdrop="static" tabindex="-1">
             <div class="modal-dialog">
               <div class="modal-content">
@@ -91,11 +103,27 @@
                       <form method="post">
                         <div class="form-group">
                           <label>Name:</label>
-                          <input type="text" name="name" class="form-control">
+                          <input type="text" name="name" value="<?php if (isset($_POST['name'])) {echo($_POST['name']);} ?>"class="form-control">
+                          <?php
+                            if (isset($_SESSION["deptNameError"])) {
+                              if ($_SESSION["deptNameError"] === true) {
+                                echo '<small class="text-danger"><strong>This field is required!</strong></small>';
+                                $_SESSION["deptNameError"] = NULL;
+                              }
+                            }
+                          ?>
                         </div>
                         <div class="form-group">
                           <label>Short Code:</label>
-                          <input type="text" name="shortCode" class="form-control">
+                          <input type="text" name="shortCode" value="<?php if (isset($_POST['shortCode'])) {echo($_POST['shortCode']);} ?>" class="form-control">
+                          <?php
+                            if (isset($_SESSION["shortCodeError"])) {
+                              if ($_SESSION["shortCodeError"] === true) {
+                                echo '<small class="text-danger"><strong>This field is required!</strong></small>';
+                                $_SESSION["shortCodeError"] = NULL;
+                              }
+                            }
+                          ?>
                         </div>
                         <!-- Modal footer -->
                         <div class="modal-footer border-0">

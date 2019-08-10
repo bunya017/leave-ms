@@ -1,10 +1,28 @@
 <?php
-    session_start();
-    require("../config.php");
-    if (isset($_SESSION["isLoggedIn"]) and ($_SESSION["isLoggedIn"] === TRUE)) {
-      $query = "SELECT * FROM `departments`";
-      $result = $conn->query($query);
+  session_start();
+  require("../config.php");
+  if (isset($_SESSION["isLoggedIn"]) and ($_SESSION["isLoggedIn"] === TRUE)) {
+    $query = "SELECT * FROM `departments`";
+    $result = $conn->query($query);
+  }
+  if (isset($_POST["addEmployee"])) {
+    if (empty($_POST["staff_pin"])) {
+      $_SESSION["staffError"] = true;
     }
+    if (empty($_POST["email"])) {
+      $_SESSION["emailError"] = true;
+    }
+    if (empty($_POST["department"]["value"])) {
+      $_SESSION["deptError"] = true;
+    }
+    if (empty($_POST["first_name"])) {
+      $_SESSION["firstNameError"] = true;
+    }
+    if (empty($_POST["last_name"])) {
+      $_SESSION["lastNameError"] = true;
+    }
+    var_dump($_POST);
+  }
 ?>
 <!DOCTYPE html>
 <html>
@@ -113,11 +131,18 @@
                         <div class="form-group">
                           <label>Staff Pin:</label>
                           <input type="text" required="" name="staff_pin" class="form-control">
+                          <?php
+                            // Catch empty field error
+                            if (isset($_SESSION["staffError"]) && ($_SESSION["staffError"] === true)) {
+                              echo '<small class="text-danger"><strong>This field is required!</strong></small>';
+                              $_SESSION["staffError"] = NULL;
+                            }
+                          ?>
                         </div>
                         <div class="form-group">
                           <label>Department:</label>
                           <select class="form-control" required="" name="department">
-                            <option>-- Choose Department --</option>
+                            <option value="">-- Choose Department --</option>
                             <?php
                               if ($result->num_rows > 0) {
                                 while ($row = $result->fetch_assoc()) {
@@ -126,25 +151,53 @@
                               }
                             ?>
                           </select>
+                          <?php
+                            // Catch empty field error
+                            if (isset($_SESSION["deptError"]) && ($_SESSION["deptError"] === true)) {
+                              echo '<small class="text-danger"><strong>This field is required!</strong></small>';
+                              $_SESSION["deptError"] = NULL;
+                            }
+                          ?>
                         </div>
                         <div class="form-group">
                           <label>Email:</label>
                           <input type="email" required="" name="email" class="form-control">
+                          <?php
+                            // Catch empty field error
+                            if (isset($_SESSION["emailError"]) && ($_SESSION["emailError"] === true)) {
+                              echo '<small class="text-danger"><strong>This field is required!</strong></small>';
+                              $_SESSION["emailError"] = NULL;
+                            }
+                          ?>
                         </div>
                         <div class="form-group">
                           <label>First Name:</label>
                           <input type="text" required="" name="first_name" class="form-control">
+                          <?php
+                            // Catch empty field error
+                            if (isset($_SESSION["firstNameError"]) && ($_SESSION["firstNameError"] === true)) {
+                              echo '<small class="text-danger"><strong>This field is required!</strong></small>';
+                              $_SESSION["firstNameError"] = NULL;
+                            }
+                          ?>
                         </div>
                         <div class="form-group">
                           <label>Last Name:</label>
                           <input type="text" required="" name="last_name" class="form-control">
+                          <?php
+                            // Catch empty field error
+                            if (isset($_SESSION["lastNameError"]) && ($_SESSION["lastNameError"] === true)) {
+                              echo '<small class="text-danger"><strong>This field is required!</strong></small>';
+                              $_SESSION["lastNameError"] = NULL;
+                            }
+                          ?>
                         </div>
                         <!-- Modal footer -->
                         <div class="modal-footer border-0">
                           <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
                             CANCEL
                           </button>
-                          <button type="submit" class="btn btn-dark">
+                          <button type="submit" name="addEmployee" class="btn btn-dark">
                             ADD EMPLOYEE
                           </button>
                         </div>

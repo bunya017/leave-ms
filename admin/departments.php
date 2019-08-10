@@ -12,7 +12,11 @@
   <body>
     <?php
       session_start();
-      var_dump($_SESSION);
+      require("../config.php");
+      if (isset($_SESSION["isLoggedIn"]) and ($_SESSION["isLoggedIn"] === TRUE)) {
+        $query = "SELECT * FROM `departments`";
+        $result = $conn->query($query);
+      }
     ?>
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
       <a class="navbar-brand ml-auto" href="dashboard.php">
@@ -57,16 +61,15 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>Computer Engineering</td>
-                  <td>COSC</td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Computer Science</td>
-                  <td>COEN</td>
-                </tr>
+                <?php
+                  if ($result->num_rows > 0) {
+                    $index = 0;
+                    while ($row = $result->fetch_assoc()) {
+                      ++$index;
+                      echo "<tr><td>" . $index . "</td><td>" . $row["name"] . "</td><td>" . $row["short_code"] . "</td></tr>";
+                    }
+                  }
+                ?>
               </tbody>
             </table>
           </div>

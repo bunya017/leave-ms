@@ -85,6 +85,15 @@
                 $_SESSION["shortCodeError"] = true;
               } elseif (empty($_POST["name"]) === TRUE) {
                 $_SESSION["deptNameError"] = true;
+              } elseif (isset($_POST["name"]) === TRUE and isset($_POST["shortCode"]) === TRUE) {
+                $name = stripcslashes($_POST["name"]);
+                $shortCode = stripcslashes($_POST["shortCode"]);
+                $query = "INSERT into `departments` (name, short_code) VALUES ('$name', '$shortCode')";
+                if ($conn->query($query) === TRUE) {
+                  echo "<br>Created department<br>";
+                } elseif (strpos($conn->error, "'name'") > 0) {
+                  $_SESSION["deptNameDupError"] = true;
+                }
               }
             }
           ?>
@@ -110,6 +119,9 @@
                                 echo '<small class="text-danger"><strong>This field is required!</strong></small>';
                                 $_SESSION["deptNameError"] = NULL;
                               }
+                            } elseif (isset($_SESSION["deptNameDupError"]) and ($_SESSION["deptNameDupError"] === TRUE)) {
+                              echo '<small class="text-danger"><strong>This name already exists!</strong></small>';
+                                $_SESSION["deptNameDupError"] = NULL;
                             }
                           ?>
                         </div>

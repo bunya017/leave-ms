@@ -109,26 +109,14 @@
                 <div class="modal-body">
                   <div class="row">
                     <div class="col-11 mx-auto">
-                      <form>
+                      <form method="post">
                         <div class="form-group">
                           <label>Staff Pin:</label>
-                          <input type="text" name="staff_pin" class="form-control">
-                        </div>
-                        <div class="form-group">
-                          <label>Email:</label>
-                          <input type="text" name="email" class="form-control">
-                        </div>
-                        <div class="form-group">
-                          <label>First Name:</label>
-                          <input type="text" name="first_name" class="form-control">
-                        </div>
-                        <div class="form-group">
-                          <label>Last Name:</label>
-                          <input type="text" name="last_name" class="form-control">
+                          <input type="text" required="" name="staff_pin" class="form-control">
                         </div>
                         <div class="form-group">
                           <label>Department:</label>
-                          <select class="form-control" name="department">
+                          <select class="form-control" required="" name="department">
                             <option>-- Choose Department --</option>
                             <?php
                               if ($result->num_rows > 0) {
@@ -139,12 +127,24 @@
                             ?>
                           </select>
                         </div>
+                        <div class="form-group">
+                          <label>Email:</label>
+                          <input type="email" required="" name="email" class="form-control">
+                        </div>
+                        <div class="form-group">
+                          <label>First Name:</label>
+                          <input type="text" required="" name="first_name" class="form-control">
+                        </div>
+                        <div class="form-group">
+                          <label>Last Name:</label>
+                          <input type="text" required="" name="last_name" class="form-control">
+                        </div>
                         <!-- Modal footer -->
                         <div class="modal-footer border-0">
                           <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
                             CANCEL
                           </button>
-                          <button type="button" class="btn btn-dark" data-dismiss="modal">
+                          <button type="submit" class="btn btn-dark">
                             ADD EMPLOYEE
                           </button>
                         </div>

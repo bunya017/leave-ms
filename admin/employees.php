@@ -15,7 +15,7 @@
   </head>
   <body>
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-      <a class="navbar-brand ml-auto" href="employee-leave.html">
+      <a class="navbar-brand ml-auto" href="dashboard.php">
         Leave MS <span class="badge badge-info">Admin</span>
       </a>
       <ul class="navbar-nav offset-md-6 offset-1 mr-auto">
@@ -44,6 +44,12 @@
                 ADD EMPLOYEE
               </a>
             </div>
+            <?php
+              if (isset($_SESSION["employeeCreated"]) && ($_SESSION["employeeCreated"] === TRUE)) {
+                echo '<div class="col-8 mx-auto"><div class="alert alert-success alert-dismissible text-center"><button type="button" class="close" data-dismiss="alert">&times;</button>Employee added successfully!</div></div>';
+                $_SESSION["employeeCreated"] = NULL;
+              }
+            ?>
           </div>
 
           <!-- Employee list -->

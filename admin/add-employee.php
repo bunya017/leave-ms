@@ -33,6 +33,7 @@
     if ($conn->query($query) === TRUE) {
       $_SESSION["employeeCreated"] = true;
       $_POST = NULL;
+      header("location: employees.php");
     } elseif (strpos($conn->error, "'staff_pin'") > 0) {
       $_SESSION["staffPinDupError"] = true;
     } elseif (strpos($conn->error, "'email'") > 0) {

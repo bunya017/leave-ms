@@ -156,9 +156,6 @@
                     </div>
                     <!-- Modal footer -->
                     <div class="modal-footer border-0">
-                      <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
-                        CANCEL
-                      </button>
                       <button type="submit" name="addEmployee" class="btn btn-dark">
                         ADD EMPLOYEE
                       </button>

@@ -79,6 +79,25 @@
                 </tr>
               </thead>
               <tbody>
+                <?php
+                  $index = 0;
+                  foreach ($employeeList as $employee) {
+                    ++$index;
+                    echo '<tr>';
+                    echo '<td>' . $index . '</td>';
+                    echo '<td>' . $employee['staff_pin'] . '</td>';
+                    echo '<td>' . $employee['first_name'] . ' ' . $employee['last_name'] . '</td>';
+                    echo '<td><abbr title="' . $employee['name'] . '">' . $employee['short_code'] . '</abbr></td>';
+                    echo '<td>' . date('d-M-Y', strtotime($employee['created_at'])) . '</td>';
+                    if ($employee['is_active'] == 1) {
+                      echo '<td><span class="badge badge-success">Active</span></td>';
+                    } else {
+                      echo '<td><span class="badge badge-danger">Inactive</span></td>';
+                    }
+                    echo '<td><a class="btn btn-outline-dark btn-sm" href="employee-profile.html">VIEW</a></td>';
+                    echo '</tr>';
+                  }
+                ?>
               </tbody>
             </table>
           </div>

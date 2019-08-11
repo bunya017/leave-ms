@@ -78,9 +78,9 @@
             <div class="col-10 mx-auto">
               <div class="card shadow-lg border-0">
                 <div class="card-header">
-                  <h2>
-                    New employee
-                  </h2>
+                  <h3>
+                    New Employee
+                  </h3>
                 </div>
                 <div class="card-body">
                   <form method="post">

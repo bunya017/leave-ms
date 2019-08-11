@@ -47,9 +47,9 @@
                     <h2>
                       <?php echo $row['first_name'] . ' ' . $row['last_name'] ?> Profile
                       <div class="float-right">
-                        <button class="btn btn-outline-dark mx-1" data-toggle="modal" data-target="#EditEmployeeModal">
-                          EDIT EMPLOYEE PROFILE
-                        </button>
+                        <?php
+                          echo '<a class="btn btn-outline-dark mx-1" href="edit-employee.php?e=' . $staff . '">EDIT EMPLOYEE PROFILE</a>';
+                        ?>
                       </div>
                     </h2>
                   </div>

@@ -1,6 +1,17 @@
 <?php
   session_start();
   require("../config.php");
+  if (isset($_SESSION["isLoggedIn"]) and ($_SESSION["isLoggedIn"] === TRUE)) {
+    $query = "SELECT * FROM `users` JOIN `departments` WHERE departments.id=users.department_id";
+    $result = $conn->query($query);
+    while ($row = $result->fetch_assoc()) {
+      $employeeList[] = array(
+        'staff_pin' => $row['staff_pin'], 'first_name' => $row['first_name'], 'last_name' => $row['last_name'],
+        'name' => $row['name'], 'short_code' => $row['short_code'], 'created_at' => $row['created_at'],
+        'is_active' => $row['is_active'],
+      );
+    }
+  }
 ?>
 <!DOCTYPE html>
 <html>
@@ -68,32 +79,6 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>COSC0001</td>
-                  <td>Jane Mikel</td>
-                  <td>
-                    <abbr title="Computer Science">COSC</abbr>
-                  </td>
-                  <td>25-Jan-2016</td>
-                  <td><span class="badge badge-success">Active</span></td>
-                  <td>
-                    <a class="btn btn-outline-dark btn-sm" href="employee-profile.html">VIEW</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>COEN0001</td>
-                  <td>John Mikel</td>
-                  <td>
-                    <abbr title="Computer Engineering">COEN</abbr>
-                  </td>
-                  <td>14-Jul-2016</td>
-                  <td><span class="badge badge-danger">Inactive</span></td>
-                  <td>
-                    <a class="btn btn-outline-dark btn-sm" href="employee-profile.html">VIEW</a>
-                  </td>
-                </tr>
               </tbody>
             </table>
           </div>

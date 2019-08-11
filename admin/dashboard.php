@@ -20,7 +20,7 @@
       </a>
       <ul class="navbar-nav offset-md-6 offset-1 mr-auto">
         <li class="nav-item">
-          <a class="nav-link" href="employees.html">Employees</a>
+          <a class="nav-link" href="employees.php">Employees</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="">Leave Applications</a>

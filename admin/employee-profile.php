@@ -1,7 +1,16 @@
+<?php
+  session_start();
+  require("../config.php");
+  if (isset($_SESSION["isLoggedIn"]) and ($_SESSION["isLoggedIn"] === TRUE)) {
+    $staff = $_GET['e'];
+    $query = "SELECT * FROM `users` JOIN `departments` WHERE users.staff_pin='$staff' AND departments.id=users.department_id";
+    $result = $conn->query($query);
+  }
+?>
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Jane Mikel Profile</title>
+    <title>Employee Profile</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
     <link rel="stylesheet" href="../static/css/bootstrap.min.css">
@@ -32,70 +41,79 @@
           <!-- Profile details card -->
           <div class="row py-5">
             <div class="col-10 mx-auto">
-              <div class="card shadow-lg border-0 pb-3">
-                <div class="card-header">
-                  <h2>
-                    Jane Mikel Profile
-                    <div class="float-right">
-                      <button class="btn btn-outline-dark mx-1" data-toggle="modal" data-target="#EditEmployeeModal">
-                        EDIT EMPLOYEE PROFILE
-                      </button>
+              <?php if (($result->num_rows > 0)): $row = $result->fetch_assoc();?>
+                <div class="card shadow-lg border-0 pb-3">
+                  <div class="card-header">
+                    <h2>
+                      <?php echo $row['first_name'] . ' ' . $row['last_name'] ?> Profile
+                      <div class="float-right">
+                        <button class="btn btn-outline-dark mx-1" data-toggle="modal" data-target="#EditEmployeeModal">
+                          EDIT EMPLOYEE PROFILE
+                        </button>
+                      </div>
+                    </h2>
+                  </div>
+                  <div class="card-body">
+                    <div class="row py-1">
+                      <h4 class="col-6">Staff Pin</h4>
+                      <h4 class="col-6">
+                        <span class="font-weight-light"><?php echo $row['staff_pin'] ?></span>
+                      </h4>
                     </div>
-                  </h2>
-                </div>
-                <div class="card-body">
-                  <div class="row py-1">
-                    <h4 class="col-6">Staff Pin</h4>
-                    <h4 class="col-6">
-                      <span class="font-weight-light">COSC0001</span>
-                    </h4>
-                  </div>
-                  <div class="row py-1">
-                    <h4 class="col-6">Email</h4>
-                    <h4 class="col-6">
-                      <span class="font-weight-light">janemikel@email.com</span>
-                    </h4>
-                  </div>
-                  <div class="row py-1">
-                    <h4 class="col-6">First Name</h4>
-                    <h4 class="col-6">
-                      <span class="font-weight-light">Jane</span>
-                    </h4>
-                  </div>
-                  <div class="row py-1">
-                    <h4 class="col-6">Last Name</h4>
-                    <h4 class="col-6">
-                      <span class="font-weight-light">Mikel</span>
-                    </h4>
-                  </div>
-                  <div class="row py-1">
-                    <h4 class="col-6">Department</h4>
-                    <h4 class="col-6">
-                      <span class="font-weight-light">Computer Science</span>
-                    </h4>
-                  </div>
-                  <div class="row py-1">
-                    <h4 class="col-6">Added on</h4>
-                    <h4 class="col-6">
-                      <span class="font-weight-light">25-Jan-2016 </span>
-                    </h4>
-                  </div>
-                  <div class="row py-1">
-                    <h4 class="col-6">Staff Status</h4>
-                    <h4 class="col-6">
-                      <span class="badge badge-success font-weight-light">
-                        Active
-                      </span>
-                    </h4>
-                  </div>
-                  <div class="row py-1">
-                    <h4 class="col-6">Leave Days Left</h4>
-                    <h4 class="col-6">
-                      <span class="font-weight-light">16 of 30</span>
-                    </h4>
+                    <div class="row py-1">
+                      <h4 class="col-6">Email</h4>
+                      <h4 class="col-6">
+                        <span class="font-weight-light"><?php echo $row['email'] ?></span>
+                      </h4>
+                    </div>
+                    <div class="row py-1">
+                      <h4 class="col-6">First Name</h4>
+                      <h4 class="col-6">
+                        <span class="font-weight-light"><?php echo $row['first_name'] ?></span>
+                      </h4>
+                    </div>
+                    <div class="row py-1">
+                      <h4 class="col-6">Last Name</h4>
+                      <h4 class="col-6">
+                        <span class="font-weight-light"><?php echo $row['last_name'] ?></span>
+                      </h4>
+                    </div>
+                    <div class="row py-1">
+                      <h4 class="col-6">Department</h4>
+                      <h4 class="col-6">
+                        <span class="font-weight-light"><?php echo $row['name'] ?></span>
+                      </h4>
+                    </div>
+                    <div class="row py-1">
+                      <h4 class="col-6">Added on</h4>
+                      <h4 class="col-6">
+                        <span class="font-weight-light"><?php echo date('d-M-Y', strtotime($row['created_at'])) ?></span>
+                      </h4>
+                    </div>
+                    <div class="row py-1">
+                      <h4 class="col-6">Staff Status</h4>
+                      <h4 class="col-6">
+                        <?php if ($row['is_active'] == 1): ?>
+                          <span class="badge badge-success font-weight-light">
+                            Active
+                          </span>
+                        <?php else: ?>
+                          <span class="badge badge-danger font-weight-light">
+                            Inactive
+                          </span>
+                        <?php endif ?>
+                      </h4>
+                    </div>
+                    <div class="row py-1">
+                      <h4 class="col-6">Leave Days Left</h4>
+                      <h4 class="col-6">
+                        <span class="font-weight-light"><?php echo $row['leave_days_left'] . ' of ' . $row['total_leave_days'] ?></span>
+                      </h4>
+                    </div>
                   </div>
                 </div>
-              </div>
+              <?php else: ?>
+              <?php endif ?>
             </div>
           </div>
 

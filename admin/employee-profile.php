@@ -40,8 +40,8 @@
         <div class="col-10 mx-auto">
           <!-- Profile details card -->
           <div class="row py-5">
-            <div class="col-10 mx-auto">
-              <?php if (($result->num_rows > 0)): $row = $result->fetch_assoc();?>
+            <?php if (($result->num_rows > 0)): $row = $result->fetch_assoc();?>
+              <div class="col-10 mx-auto">
                 <div class="card shadow-lg border-0 pb-3">
                   <div class="card-header">
                     <h2>
@@ -112,9 +112,17 @@
                     </div>
                   </div>
                 </div>
-              <?php else: ?>
-              <?php endif ?>
-            </div>
+              </div>
+            <?php else: ?>
+              <div class="col-12 mt-5 text-center">
+                <h1 class="text-dark display-1">404</h1>
+                <p class="lead pb-3">We can't seem to find the page you're looking for.</p>
+                <ul class="list-inline">
+                  <a class="btn btn-outline-dark btn-sm mx-1" class="text-dark list-inline-item" href="dashboard.php">Back to Home</a>
+                  <a class="btn btn-outline-dark btn-sm mx-1" class="text-dark list-inline-item" href="employees.php">Employees</a>
+                </ul>
+              </div>
+            <?php endif ?>
           </div>
 
           <!-- Edit Employee profile -->

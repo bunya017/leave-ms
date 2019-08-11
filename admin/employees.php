@@ -94,7 +94,7 @@
                     } else {
                       echo '<td><span class="badge badge-danger">Inactive</span></td>';
                     }
-                    echo '<td><a class="btn btn-outline-dark btn-sm" href="employee-profile.html">VIEW</a></td>';
+                    echo '<td><a class="btn btn-outline-dark btn-sm" href="employee-profile.php?e=' . $employee['staff_pin'] . '">VIEW</a></td>';
                     echo '</tr>';
                   }
                 ?>

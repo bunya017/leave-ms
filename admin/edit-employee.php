@@ -166,6 +166,9 @@
                       ?>
                     </div>
                     <div class="modal-footer border-0">
+                      <?php
+                        echo '<a class="btn btn-outline-dark" href="employee-profile.php?e=' . $staffPin . '">CANCEL</a>';
+                      ?>
                       <button type="submit" name="editEmployee" class="btn btn-dark">
                         EDIT EMPLOYEE PROFILE
                       </button>

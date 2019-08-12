@@ -7,7 +7,14 @@
     $result = $conn->query($query);
     echo $conn->error;
     if (($result->num_rows > 0)){
-      $staff = $result->fetch_assoc();
+      $staffRow = $result->fetch_assoc();
+      $staff = array('staff_pin' => $staffRow['staff_pin'], 'email' => $staffRow['email'], 'first_name' => $staffRow['first_name'],
+        'last_name' => $staffRow['last_name'], 'department_id' => $staffRow['department_id']
+      );
+      $departments[] = array('id' => $staffRow['id'], 'name' => $staffRow['name']);
+      while ($row = $result->fetch_assoc()) {
+        $departments[] = array('id' => $row['id'], 'name' => $row['name']);
+      }
     }
     if (isset($_POST['editEmployee'])) {
       if (empty($_POST["staff_pin"])) {
@@ -144,15 +151,13 @@
                       <select class="form-control" required="" name="department">
                         <option value="">-- Choose Department --</option>
                         <?php
-                          if ($result->num_rows > 0) {
-                            while ($departments = $result->fetch_assoc()) {
-                              if (isset($_POST['department']) && ($_POST['department'] == $departments["id"])) {
-                                echo '<option value="' . $departments["id"] . '" selected="">' . $departments["name"] . '</option>';
-                              } elseif ($staff['department_id'] == $departments["id"]) {
-                                echo '<option value="' . $departments["id"] . '" selected="">' . $departments["name"] . '</option>';
-                              } else {
-                                echo '<option value="' . $departments["id"] . '">' . $departments["name"] . '</option>';
-                              }
+                          foreach ($departments as $department) {
+                            if (isset($_POST['department']) && ($_POST['department'] == $department["id"])) {
+                              echo '<option value="' . $department["id"] . '" selected="">' . $department["name"] . '</option>';
+                            } elseif ($staff['department_id'] == $department["id"]) {
+                              echo '<option value="' . $department["id"] . '" selected="">' . $department["name"] . '</option>';
+                            } else {
+                              echo '<option value="' . $department["id"] . '">' . $department["name"] . '</option>';
                             }
                           }
                         ?>

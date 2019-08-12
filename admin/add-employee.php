@@ -156,6 +156,9 @@
                     </div>
                     <!-- Modal footer -->
                     <div class="modal-footer border-0">
+                      <a class="btn btn-outline-dark" href="employees.php">
+                        CANCEL
+                      </a>
                       <button type="submit" name="addEmployee" class="btn btn-dark">
                         ADD EMPLOYEE
                       </button>

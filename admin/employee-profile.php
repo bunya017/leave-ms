@@ -40,6 +40,12 @@
         <div class="col-10 mx-auto">
           <!-- Profile details card -->
           <div class="row py-5">
+            <?php
+              if (isset($_SESSION["employeeProfileUpdated"]) && ($_SESSION["employeeProfileUpdated"] === TRUE)) {
+                echo '<div class="col-8 mx-auto"><div class="alert alert-success alert-dismissible text-center"><button type="button" class="close" data-dismiss="alert">&times;</button>Employee profile updated successfully!</div></div>';
+                $_SESSION["employeeProfileUpdated"] = NULL;
+              }
+            ?>
             <?php if (($result->num_rows > 0)): $row = $result->fetch_assoc();?>
               <div class="col-10 mx-auto">
                 <div class="card shadow-lg border-0 pb-3">

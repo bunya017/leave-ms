@@ -20,6 +20,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
     <link rel="stylesheet" href="../static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/css/fontawesome/fontawesome-v5.css">
     <script src="../static/js/jquery-3.3.1.slim.min.js"></script>
     <script src="../static/js/popper.min.js"></script>
     <script src="../static/js/bootstrap.min.js"></script>
@@ -95,6 +96,7 @@
                       echo '<td><span class="badge badge-danger">Inactive</span></td>';
                     }
                     echo '<td><a class="btn btn-outline-dark btn-sm" href="employee-profile.php?e=' . $employee['staff_pin'] . '">VIEW</a></td>';
+                    echo '<td class="px-0"><button class="btn btn-outline-danger"><i class="fa fa-trash"></i></button class="btn btn-outline-danger"></td>';
                     echo '</tr>';
                   }
                 ?>

@@ -38,8 +38,10 @@
         first_name='$first_name', last_name='$last_name', department_id='$department' WHERE staff_pin='$staffPin'";
       if ($conn->query($updateQuery) === TRUE) {
         echo "Updated!";
-      } else {
-        echo "<br>" . $conn->error . "<br>";
+      } elseif (strpos($conn->error, "'staff_pin'") > 0) {
+        $_SESSION["staffUpdateDupError"] = true;
+      } elseif (strpos($conn->error, "'email'") > 0) {
+        $_SESSION["emailUpdateDupError"] = true;
       }
     }
   }
@@ -93,6 +95,9 @@
                         if (isset($_SESSION["staffUpdateError"]) && ($_SESSION["staffUpdateError"] === true)) {
                           echo '<small class="text-danger"><strong>This field is required!</strong></small>';
                           $_SESSION["staffUpdateError"] = NULL;
+                        } elseif (isset($_SESSION["staffUpdateDupError"]) && ($_SESSION["staffUpdateDupError"] === true)) {
+                          echo '<small class="text-danger"><strong>This staff pin is already in use!</strong></small>';
+                          $_SESSION["staffUpdateDupError"] = NULL;
                         }
                       ?>
                     </div>
@@ -104,6 +109,9 @@
                         if (isset($_SESSION["emailUpdateError"]) && ($_SESSION["emailUpdateError"] === true)) {
                           echo '<small class="text-danger"><strong>This field is required!</strong></small>';
                           $_SESSION["emailUpdateError"] = NULL;
+                        } elseif (isset($_SESSION["emailUpdateDupError"]) && ($_SESSION["emailUpdateDupError"] === true)) {
+                          echo '<small class="text-danger"><strong>This email is already in use!</strong></small>';
+                          $_SESSION["emailUpdateDupError"] = NULL;
                         }
                       ?>
                     </div>

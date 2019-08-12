@@ -37,7 +37,9 @@
       $updateQuery = "UPDATE `users` SET staff_pin='$staff_pin', email='$email',
         first_name='$first_name', last_name='$last_name', department_id='$department' WHERE staff_pin='$staffPin'";
       if ($conn->query($updateQuery) === TRUE) {
-        echo "Updated!";
+        $_SESSION["employeeProfileUpdated"] = true;
+        $_POST = NULL;
+        header("location: employee-profile.php?e=$staff_pin");
       } elseif (strpos($conn->error, "'staff_pin'") > 0) {
         $_SESSION["staffUpdateDupError"] = true;
       } elseif (strpos($conn->error, "'email'") > 0) {

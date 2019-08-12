@@ -1,3 +1,16 @@
+<?php
+  session_start();
+  require("../config.php");
+  if (isset($_SESSION["isLoggedIn"]) and ($_SESSION["isLoggedIn"] === TRUE)) {
+    $staff = $_GET['e'];
+    $query = "SELECT * FROM `users` JOIN `departments` WHERE `users`.`staff_pin`='$staff'";
+    $result = $conn->query($query);
+    echo $conn->error;
+    if (($result->num_rows > 0)){
+      $staff = $result->fetch_assoc();
+    }
+  }
+?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -41,23 +54,38 @@
                   <form method="post">
                     <div class="form-group">
                       <label>Staff Pin:</label>
-                      <input type="text" name="staff_pin" class="form-control">
+                      <input type="text" name="staff_pin" value="<?php if(isset($_POST['staff_pin'])){echo($_POST['staff_pin']);}else{echo($staff['staff_pin']);} ?>" class="form-control">
                     </div>
                     <div class="form-group">
                       <label>Email:</label>
-                      <input type="text" name="email" class="form-control">
+                      <input type="text" name="email" value="<?php if(isset($_POST['email'])){echo($_POST['email']);}else{echo($staff['email']);} ?>" class="form-control">
                     </div>
                     <div class="form-group">
                       <label>First Name:</label>
-                      <input type="text" name="first_name" class="form-control">
+                      <input type="text" name="first_name" value="<?php if(isset($_POST['first_name'])){echo($_POST['first_name']);}else{echo($staff['first_name']);} ?>" class="form-control">
                     </div>
                     <div class="form-group">
                       <label>Last Name:</label>
-                      <input type="text" name="last_name" class="form-control">
+                      <input type="text" name="last_name" value="<?php if(isset($_POST['last_name'])){echo($_POST['last_name']);}else{echo($staff['last_name']);} ?>" class="form-control">
                     </div>
                     <div class="form-group">
                       <label>Department:</label>
-                      <input type="text" name="department" class="form-control">
+                      <select class="form-control" required="" name="department">
+                        <option value="">-- Choose Department --</option>
+                        <?php
+                          if ($result->num_rows > 0) {
+                            while ($departments = $result->fetch_assoc()) {
+                              if (isset($_POST['department']) && ($_POST['department'] == $departments["id"])) {
+                                echo '<option value="' . $departments["id"] . '" selected="">' . $departments["name"] . '</option>';
+                              } elseif ($staff['department_id'] == $departments["id"]) {
+                                echo '<option value="' . $departments["id"] . '" selected="">' . $departments["name"] . '</option>';
+                              } else {
+                                echo '<option value="' . $departments["id"] . '">' . $departments["name"] . '</option>';
+                              }
+                            }
+                          }
+                        ?>
+                      </select>
                     </div>
                     <div class="modal-footer border-0">
                       <button type="submit" name="editEmployee" class="btn btn-dark">

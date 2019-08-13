@@ -51,9 +51,9 @@
                         <a class="btn btn-outline-dark mx-1" href="edit-profile.php">
                           EDIT PROFILE
                         </a>
-                        <button class="btn btn-outline-dark mx-1" data-toggle="modal" data-target="#passwordChangeModal">
+                        <a class="btn btn-outline-dark mx-1" href="change-password.php">
                           CHANGE PASSWORD
-                        </button>
+                        </a>
                       </div>
                     </h2>
                   </div>

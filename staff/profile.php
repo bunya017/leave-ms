@@ -1,3 +1,12 @@
+<?php
+  session_start();
+  require("../config.php");
+  if (isset($_SESSION["isLoggedIn"]) and ($_SESSION["isLoggedIn"] === TRUE)) {
+    $staff = $_SESSION['staff_pin'];
+    $query = "SELECT * FROM `users` JOIN `departments` WHERE `users`.`staff_pin`='$staff' AND `departments`.`id`=`users`.`department_id`";
+    $result = $conn->query($query);
+  }
+?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -24,65 +33,76 @@
           <!-- Profile details card -->
           <div class="row py-5">
             <div class="col-10 mx-auto">
-              <div class="card shadow-lg border-0 pb-3">
-                <div class="card-header">
-                  <h2>
-                    Profile Details
-                    <div class="float-right">
-                      <button class="btn btn-outline-dark mx-1" data-toggle="modal" data-target="#profileUpdateModal">
-                        EDIT PROFILE
-                      </button>
-                      <button class="btn btn-outline-dark mx-1" data-toggle="modal" data-target="#passwordChangeModal">
-                        CHANGE PASSWORD
-                      </button>
+              <?php if (($result->num_rows > 0)): $row = $result->fetch_assoc();?>
+                <div class="card shadow-lg border-0 pb-3">
+                  <div class="card-header">
+                    <h2>
+                      Profile Details
+                      <div class="float-right">
+                        <button class="btn btn-outline-dark mx-1" data-toggle="modal" data-target="#profileUpdateModal">
+                          EDIT PROFILE
+                        </button>
+                        <button class="btn btn-outline-dark mx-1" data-toggle="modal" data-target="#passwordChangeModal">
+                          CHANGE PASSWORD
+                        </button>
+                      </div>
+                    </h2>
+                  </div>
+                  <div class="card-body">
+                    <div class="row py-1">
+                      <h4 class="col-6">Staff Pin</h4>
+                      <h4 class="col-6">
+                        <span class="font-weight-light">COSC0001</span>
+                      </h4>
                     </div>
-                  </h2>
-                </div>
-                <div class="card-body">
-                  <div class="row py-1">
-                    <h4 class="col-6">Staff Pin</h4>
-                    <h4 class="col-6">
-                      <span class="font-weight-light">COSC0001</span>
-                    </h4>
-                  </div>
-                  <div class="row py-1">
-                    <h4 class="col-6">Email</h4>
-                    <h4 class="col-6">
-                      <span class="font-weight-light">janemikel@email.com</span>
-                    </h4>
-                  </div>
-                  <div class="row py-1">
-                    <h4 class="col-6">First Name</h4>
-                    <h4 class="col-6">
-                      <span class="font-weight-light">Jane</span>
-                    </h4>
-                  </div>
-                  <div class="row py-1">
-                    <h4 class="col-6">Last Name</h4>
-                    <h4 class="col-6">
-                      <span class="font-weight-light">Mikel</span>
-                    </h4>
-                  </div>
-                  <div class="row py-1">
-                    <h4 class="col-6">Total Leave Days</h4>
-                    <h4 class="col-6">
-                      <span class="font-weight-light">30</span>
-                    </h4>
-                  </div>
-                  <div class="row py-1">
-                    <h4 class="col-6">Leave Days Remaining</h4>
-                    <h4 class="col-6">
-                      <span class="font-weight-light">16</span>
-                    </h4>
-                  </div>
-                  <div class="row py-1">
-                    <h4 class="col-6">Last Profile Update Date</h4>
-                    <h4 class="col-6">
-                      <span class="font-weight-light">02-Jul-2019</span>
-                    </h4>
+                    <div class="row py-1">
+                      <h4 class="col-6">Email</h4>
+                      <h4 class="col-6">
+                        <span class="font-weight-light">janemikel@email.com</span>
+                      </h4>
+                    </div>
+                    <div class="row py-1">
+                      <h4 class="col-6">First Name</h4>
+                      <h4 class="col-6">
+                        <span class="font-weight-light">Jane</span>
+                      </h4>
+                    </div>
+                    <div class="row py-1">
+                      <h4 class="col-6">Last Name</h4>
+                      <h4 class="col-6">
+                        <span class="font-weight-light">Mikel</span>
+                      </h4>
+                    </div>
+                    <div class="row py-1">
+                      <h4 class="col-6">Total Leave Days</h4>
+                      <h4 class="col-6">
+                        <span class="font-weight-light">30</span>
+                      </h4>
+                    </div>
+                    <div class="row py-1">
+                      <h4 class="col-6">Leave Days Remaining</h4>
+                      <h4 class="col-6">
+                        <span class="font-weight-light">16</span>
+                      </h4>
+                    </div>
+                    <div class="row py-1">
+                      <h4 class="col-6">Last Profile Update Date</h4>
+                      <h4 class="col-6">
+                        <span class="font-weight-light">02-Jul-2019</span>
+                      </h4>
+                    </div>
                   </div>
                 </div>
-              </div>
+              <?php else: ?>
+                <div class="col-12 mt-5 text-center">
+                  <h1 class="text-dark display-1">404</h1>
+                  <p class="lead pb-3">We can't seem to find the page you're looking for.</p>
+                  <ul class="list-inline">
+                    <a class="btn btn-outline-dark btn-sm mx-1" class="text-dark list-inline-item" href="dashboard.php">Back to Home</a>
+                    <a class="btn btn-outline-dark btn-sm mx-1" class="text-dark list-inline-item" href="employees.php">Employees</a>
+                  </ul>
+                </div>
+              <?php endif ?>
             </div>
           </div>
 

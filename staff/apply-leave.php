@@ -49,9 +49,9 @@
                       </div>
                       <!-- Modal footer -->
                       <div class="modal-footer border-0">
-                        <button class="btn btn-outline-secondary">
+                        <a class="btn btn-outline-secondary" href="dashboard.php">
                           CANCEL
-                        </button>
+                        </a>
                         <button class="btn btn-dark">
                           APPLY FOR LEAVE
                         </button>

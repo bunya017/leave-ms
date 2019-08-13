@@ -76,9 +76,9 @@
               <h2>Leave Applications</h2>
             </div>
             <div class="col-6">
-              <button type="button" class="btn btn-dark float-right" data-toggle="modal" data-target="#newLeaveModal">
+              <a class="btn btn-dark float-right" href="apply-leave.php">
                 APPLY FOR LEAVE
-              </button>
+              </a>
             </div>
           </div>
 
@@ -105,7 +105,7 @@
                   <td><span class="badge badge-warning">Pending</span></td>
                   <td><span class="badge badge-warning">Pending</span></td>
                   <td>
-                    <button type="button" class="btn btn-outline-dark btn-sm" data-toggle="modal" data-target="#viewLeaveDetail">VIEW
+                    <button class="btn btn-outline-dark btn-sm" data-toggle="modal" data-target="#viewLeaveDetail">VIEW
                     </button>
                   </td>
                 </tr>
@@ -116,7 +116,7 @@
                   <td>14 Days</td>
                   <td>25-Jan-2019</td>
                   <td><span class="badge badge-success">Approved</span></td>
-                  <td><button type="button" class="btn btn-outline-dark btn-sm" data-toggle="modal" data-target="#viewLeaveDetail">VIEW</button>
+                  <td><button class="btn btn-outline-dark btn-sm" data-toggle="modal" data-target="#viewLeaveDetail">VIEW</button>
                   </td>
                 </tr>
                 <tr>
@@ -126,7 +126,7 @@
                   <td>12 Days</td>
                   <td>14-Jul-2018</td>
                   <td><span class="badge badge-danger">Disapproved</span></td>
-                  <td><button type="button" class="btn btn-outline-dark btn-sm" data-toggle="modal" data-target="#viewLeaveDetail">VIEW</button>
+                  <td><button class="btn btn-outline-dark btn-sm" data-toggle="modal" data-target="#viewLeaveDetail">VIEW</button>
                   </td>
                 </tr>
               </tbody>
@@ -140,7 +140,7 @@
                 <!-- Modal Header -->
                 <div class="modal-header">
                   <h4 class="modal-title">Chilling</h4>
-                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <button class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <!-- Modal body -->
                 <div class="modal-body">
@@ -183,7 +183,7 @@
                 </div>
                 <!-- Modal footer -->
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                  <button class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
                 </div>
 
               </div>

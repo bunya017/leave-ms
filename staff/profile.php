@@ -52,43 +52,49 @@
                     <div class="row py-1">
                       <h4 class="col-6">Staff Pin</h4>
                       <h4 class="col-6">
-                        <span class="font-weight-light">COSC0001</span>
+                        <span class="font-weight-light"><?php echo $row['staff_pin'] ?></span>
                       </h4>
                     </div>
                     <div class="row py-1">
                       <h4 class="col-6">Email</h4>
                       <h4 class="col-6">
-                        <span class="font-weight-light">janemikel@email.com</span>
+                        <span class="font-weight-light"><?php echo $row['email'] ?></span>
+                      </h4>
+                    </div>
+                    <div class="row py-1">
+                      <h4 class="col-6">Department</h4>
+                      <h4 class="col-6">
+                        <span class="font-weight-light"><?php echo $row['name'] ?></span>
                       </h4>
                     </div>
                     <div class="row py-1">
                       <h4 class="col-6">First Name</h4>
                       <h4 class="col-6">
-                        <span class="font-weight-light">Jane</span>
+                        <span class="font-weight-light"><?php echo $row['first_name'] ?></span>
                       </h4>
                     </div>
                     <div class="row py-1">
                       <h4 class="col-6">Last Name</h4>
                       <h4 class="col-6">
-                        <span class="font-weight-light">Mikel</span>
+                        <span class="font-weight-light"><?php echo $row['last_name'] ?></span>
                       </h4>
                     </div>
                     <div class="row py-1">
                       <h4 class="col-6">Total Leave Days</h4>
                       <h4 class="col-6">
-                        <span class="font-weight-light">30</span>
+                        <span class="font-weight-light"><?php echo $row['total_leave_days'] ?></span>
                       </h4>
                     </div>
                     <div class="row py-1">
                       <h4 class="col-6">Leave Days Remaining</h4>
                       <h4 class="col-6">
-                        <span class="font-weight-light">16</span>
+                        <span class="font-weight-light"><?php echo $row['leave_days_left'] ?></span>
                       </h4>
                     </div>
                     <div class="row py-1">
                       <h4 class="col-6">Last Profile Update Date</h4>
                       <h4 class="col-6">
-                        <span class="font-weight-light">02-Jul-2019</span>
+                        <span class="font-weight-light"><?php echo date('d-M-Y', strtotime($row['updated_at'])) ?></span>
                       </h4>
                     </div>
                   </div>

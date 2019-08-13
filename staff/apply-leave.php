@@ -1,3 +1,20 @@
+<?php
+  session_start();
+  require("../config.php");
+  if (isset($_SESSION["isLoggedIn"]) and ($_SESSION["isLoggedIn"] === TRUE)) {
+    if (isset($_POST["applyLeave"])) {
+      if (empty($_POST["purpose"])) {
+        $_SESSION["purposeError"] = true;
+      }
+      if (empty($_POST["start_date"])) {
+        $_SESSION["startDateError"] = true;
+      }
+      if (empty($_POST["stop_date"])) {
+        $_SESSION["stopDateError"] = true;
+      }
+    }
+  }
+?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -30,29 +47,50 @@
                     </h3>
                   </div>
                   <div class="card-body">
-                    <form>
+                    <form method="post">
                       <div class="form-group">
                         <label>Purpose:</label>
-                        <input type="text" class="form-control">
+                        <input type="text" name="purpose" class="form-control">
+                        <?php
+                          // Catch empty field error
+                          if (isset($_SESSION["purposeError"]) && ($_SESSION["purposeError"] === TRUE)) {
+                            echo '<small class="text-danger"><strong>This field is required!</strong></small>';
+                            $_SESSION["purposeError"] = NULL;
+                          }
+                        ?>
                       </div>
                       <div class="form-group">
                         <label>Start Date:</label>
-                        <input type="date" class="form-control">
+                        <input type="date" name="start_date" class="form-control">
+                        <?php
+                          // Catch empty field error
+                          if (isset($_SESSION["startDateError"]) && ($_SESSION["startDateError"] === TRUE)) {
+                            echo '<small class="text-danger"><strong>This field is required!</strong></small>';
+                            $_SESSION["startDateError"] = NULL;
+                          }
+                        ?>
                       </div>
                       <div class="form-group">
                         <label>End Date:</label>
-                        <input type="date" class="form-control">
+                        <input type="date" name="stop_date" class="form-control">
+                        <?php
+                          // Catch empty field error
+                          if (isset($_SESSION["stopDateError"]) && ($_SESSION["stopDateError"] === TRUE)) {
+                            echo '<small class="text-danger"><strong>This field is required!</strong></small>';
+                            $_SESSION["stopDateError"] = NULL;
+                          }
+                        ?>
                       </div>
                       <div class="form-group">
-                        <label>Extra information:</label>
-                        <textarea class="form-control" rows="3"></textarea>
+                        <label>Extra Information:</label>
+                        <textarea class="form-control" name="extra_information" rows="3"></textarea>
                       </div>
                       <!-- Modal footer -->
                       <div class="modal-footer border-0">
                         <a class="btn btn-outline-secondary" href="dashboard.php">
                           CANCEL
                         </a>
-                        <button class="btn btn-dark">
+                        <button class="btn btn-dark" name="applyLeave">
                           APPLY FOR LEAVE
                         </button>
                       </div>

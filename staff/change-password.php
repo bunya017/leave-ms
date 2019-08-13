@@ -23,6 +23,7 @@
             if ($conn->query($changePasswordQuery) === TRUE) {
               $_SESSION["passwordChanged"] = true;
               $_POST = NULL;
+              header("location: profile.php");
             }
           } else {
             $_SESSION["wrongPassError"] = true;

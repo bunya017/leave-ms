@@ -5,6 +5,17 @@
     $staff = $_SESSION["staff_pin"];
     $query = "SELECT * FROM `users` WHERE `staff_pin`='$staff'";
     $result = $conn->query($query);
+    if (isset($_POST['editStaffProfile'])) {
+      if (empty($_POST["email"])) {
+        $_SESSION["emailEditError"] = true;
+      }
+      if (empty($_POST["first_name"])) {
+        $_SESSION["firstNameEditError"] = true;
+      }
+      if (empty($_POST["last_name"])) {
+        $_SESSION["lastNameEditError"] = true;
+      }
+    }
   }
 ?>
 <!DOCTYPE html>
@@ -40,22 +51,43 @@
                     </h3>
                   </div>
                   <div class="card-body">
-                    <form>
+                    <form method="post">
                       <div class="form-group">
                         <label>Staff Pin:</label>
-                        <input type="text" name="staff_pin" disabled="" value="Staff Pin" class="form-control">
+                        <input type="text" disabled="" value="<?php echo $staff ?>" class="form-control">
                       </div>
                       <div class="form-group">
                         <label>Email:</label>
-                        <input type="email" required="" class="form-control">
+                        <input type="email" name="email" required="" value="<?php if(isset($_POST['email'])){echo($_POST['email']);}else{echo($row['email']);} ?>" class="form-control">
+                        <?php
+                          // Catch empty field error
+                          if (isset($_SESSION["emailEditError"]) && ($_SESSION["emailEditError"] === true)) {
+                            echo '<small class="text-danger"><strong>This field is required!</strong></small>';
+                            $_SESSION["emailEditError"] = NULL;
+                          }
+                        ?>
                       </div>
                       <div class="form-group">
                         <label>First Name:</label>
-                        <input type="text" required="" class="form-control">
+                        <input type="text" name="first_name" required="" value="<?php if(isset($_POST['first_name'])){echo($_POST['first_name']);}else{echo($row['first_name']);} ?>" class="form-control">
+                        <?php
+                          // Catch empty field error
+                          if (isset($_SESSION["firstNameEditError"]) && ($_SESSION["firstNameEditError"] === true)) {
+                            echo '<small class="text-danger"><strong>This field is required!</strong></small>';
+                            $_SESSION["firstNameEditError"] = NULL;
+                          }
+                        ?>
                       </div>
                       <div class="form-group">
                         <label>Last Name:</label>
-                        <input type="text" required="" class="form-control">
+                        <input type="text" name="last_name" required="" value="<?php if(isset($_POST['last_name'])){echo($_POST['last_name']);}else{echo($row['last_name']);} ?>" class="form-control">
+                        <?php
+                          // Catch empty field error
+                          if (isset($_SESSION["lastNameEditError"]) && ($_SESSION["lastNameEditError"] === true)) {
+                            echo '<small class="text-danger"><strong>This field is required!</strong></small>';
+                            $_SESSION["lastNameEditError"] = NULL;
+                          }
+                        ?>
                       </div>
                       <!-- Modal footer -->
                       <div class="modal-footer border-0">

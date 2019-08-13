@@ -133,53 +133,6 @@
             </table>
           </div>
 
-          <!-- New Leave Application Modal -->
-          <div class="modal" id="newLeaveModal" data-backdrop="static" tabindex="-1">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <!-- Modal Header -->
-                <div class="modal-header">
-                  <h4 class="modal-title">New Leave Application</h4>
-                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <!-- Modal body -->
-                <div class="modal-body">
-                  <div class="row">
-                    <div class="col-11 mx-auto">
-                      <form>
-                        <div class="form-group">
-                          <label>Start Date:</label>
-                          <input type="date" class="form-control">
-                        </div>
-                        <div class="form-group">
-                          <label>End Date:</label>
-                          <input type="date" class="form-control">
-                        </div>
-                        <div class="form-group">
-                          <label>Purpose:</label>
-                          <input type="text" class="form-control">
-                        </div>
-                        <div class="form-group">
-                          <label>Extra information:</label>
-                          <textarea class="form-control" rows="3"></textarea>
-                        </div>
-                        <!-- Modal footer -->
-                        <div class="modal-footer border-0">
-                          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
-                            CANCEL
-                          </button>
-                          <button type="button" class="btn btn-dark" data-dismiss="modal">
-                            APPLY FOR LEAVE
-                          </button>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
           <!-- View Leave Modal -->
           <div class="modal" id="viewLeaveDetail" data-backdrop="static" tabindex="-1">
             <div class="modal-dialog modal-lg">

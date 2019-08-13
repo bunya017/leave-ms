@@ -16,14 +16,13 @@
       } else {
         if ($result->num_rows > 0) {
           $row = $result->fetch_assoc();
-          $oldPassword = $_POST["oldPassword"];
-          $newPassword = $_POST["newPassword"];
-          if (password_verify($oldPassword, $row["password"])) {
+          $oldPassword = stripcslashes($_POST["oldPassword"]);
+          $newPassword = password_hash(stripcslashes($_POST["newPassword"]), PASSWORD_DEFAULT);
+          if (password_verify($oldPassword, $row["password"]) === TRUE) {
             $changePasswordQuery = "UPDATE `users` SET password='$newPassword' WHERE staff_pin='$staff'";
             if ($conn->query($changePasswordQuery) === TRUE) {
               $_SESSION["passwordChanged"] = true;
               $_POST = NULL;
-              echo "Changed!";
             }
           } else {
             $_SESSION["wrongPassError"] = true;

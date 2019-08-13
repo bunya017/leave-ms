@@ -2,6 +2,14 @@
   session_start();
   require("../config.php");
   if (isset($_SESSION["isLoggedIn"]) and ($_SESSION["isLoggedIn"] === TRUE)) {
+    $staff_pin = $_SESSION["staff_pin"];
+    $query = "SELECT * FROM `users` WHERE staff_pin='$staff_pin'";
+    $result = $conn->query($query);
+    if ($result->num_rows > 0) {
+      $row = $result->fetch_assoc();
+      $staffLeaveDays = $row["total_leave_days"];
+      $staffLeaveDaysLeft = $row["leave_days_left"];
+    }
     if (isset($_POST["applyLeave"])) {
       if (empty($_POST["purpose"])) {
         $_SESSION["purposeError"] = true;
@@ -11,6 +19,28 @@
       }
       if (empty($_POST["stop_date"])) {
         $_SESSION["stopDateError"] = true;
+      } else {
+        $start = date_create($_POST["start_date"]);
+        $stop = date_create($_POST["stop_date"]);
+        $now = date_create("now");
+        if ($start > $stop) {
+          $_SESSION["negativeDateError"] = true;
+        } elseif ($now > $start) {
+          $_SESSION["startLessThanToday"] = true;
+        } elseif ($now > $stop) {
+          $_SESSION["stopLessThanToday"] = true;
+        }
+      }
+    }
+    if (isset($_POST["applyLeave"], $_POST["purpose"], $_POST["start_date"],$_POST["stop_date"])) {
+      $purpose = stripcslashes($_POST['purpose']);
+      $start_date = strtotime(stripcslashes($_POST['start_date']));
+      $stop_date = strtotime(stripcslashes($_POST['stop_date']));
+      $interval = ($stop_date -  $start_date) / 60 / 60 / 24; // Division to return interval in days
+      if (($interval > $staffLeaveDaysLeft) && ($staffLeaveDaysLeft == $staffLeaveDays)) {
+        $_SESSION["aboveLeaveDaysError"] = true;
+      } elseif (($interval > $staffLeaveDaysLeft) && ($staffLeaveDaysLeft < $staffLeaveDays)) {
+        $_SESSION["aboveLeaveDaysLeftError"] = true;
       }
     }
   }
@@ -47,10 +77,19 @@
                     </h3>
                   </div>
                   <div class="card-body">
+                  <?php
+                    if (isset($_SESSION["aboveLeaveDaysError"]) && ($_SESSION["aboveLeaveDaysError"] === TRUE)) {
+                      echo '<div class="alert alert-danger alert-dismissible text-center my-3"><button type="button" class="close" data-dismiss="alert">&times;</button>Leave period cannot be longer than ' . $staffLeaveDays . ' days!</div>';
+                      $_SESSION["aboveLeaveDaysError"] = NULL;
+                    } else if (isset($_SESSION["aboveLeaveDaysLeftError"]) && ($_SESSION["aboveLeaveDaysLeftError"] === TRUE)) {
+                      echo '<div class="alert alert-danger alert-dismissible text-center my-3"><button type="button" class="close" data-dismiss="alert">&times;</button>Leave period cannot be longer than ' . $staffLeaveDaysLeft . ' days!</div>';
+                      $_SESSION["aboveLeaveDaysLeftError"] = NULL;
+                    }
+                  ?>
                     <form method="post">
                       <div class="form-group">
                         <label>Purpose:</label>
-                        <input type="text" name="purpose" class="form-control">
+                        <input type="text" name="purpose" value="<?php if(isset($_POST['purpose'])){echo($_POST['purpose']);} ?>" class="form-control">
                         <?php
                           // Catch empty field error
                           if (isset($_SESSION["purposeError"]) && ($_SESSION["purposeError"] === TRUE)) {
@@ -61,29 +100,38 @@
                       </div>
                       <div class="form-group">
                         <label>Start Date:</label>
-                        <input type="date" name="start_date" class="form-control">
+                        <input type="date" name="start_date" value="<?php if(isset($_POST['start_date'])){echo($_POST['start_date']);} ?>" class="form-control">
                         <?php
                           // Catch empty field error
                           if (isset($_SESSION["startDateError"]) && ($_SESSION["startDateError"] === TRUE)) {
                             echo '<small class="text-danger"><strong>This field is required!</strong></small>';
                             $_SESSION["startDateError"] = NULL;
+                          } elseif (isset($_SESSION["negativeDateError"]) && ($_SESSION["negativeDateError"] === TRUE)) {
+                            echo '<small class="text-danger"><strong>Start date cannot be greater than end date!</strong></small>';
+                            $_SESSION["negativeDateError"] = NULL;
+                          } elseif (isset($_SESSION["startLessThanToday"]) && ($_SESSION["startLessThanToday"] === TRUE)) {
+                            echo '<small class="text-danger"><strong>Start date cannot be less than today!</strong></small>';
+                            $_SESSION["startLessThanToday"] = NULL;
                           }
                         ?>
                       </div>
                       <div class="form-group">
                         <label>End Date:</label>
-                        <input type="date" name="stop_date" class="form-control">
+                        <input type="date" name="stop_date" value="<?php if(isset($_POST['stop_date'])){echo($_POST['stop_date']);} ?>" class="form-control">
                         <?php
                           // Catch empty field error
                           if (isset($_SESSION["stopDateError"]) && ($_SESSION["stopDateError"] === TRUE)) {
                             echo '<small class="text-danger"><strong>This field is required!</strong></small>';
                             $_SESSION["stopDateError"] = NULL;
+                          } elseif (isset($_SESSION["stopLessThanToday"]) && ($_SESSION["stopLessThanToday"] === TRUE)) {
+                            echo '<small class="text-danger"><strong>End date cannot be less than today!</strong></small>';
+                            $_SESSION["stopLessThanToday"] = NULL;
                           }
                         ?>
                       </div>
                       <div class="form-group">
                         <label>Extra Information:</label>
-                        <textarea class="form-control" name="extra_information" rows="3"></textarea>
+                        <textarea class="form-control" name="extra_information" value="<?php if(isset($_POST['extra_information'])){echo($_POST['extra_information']);} ?>" rows="3"></textarea>
                       </div>
                       <!-- Modal footer -->
                       <div class="modal-footer border-0">

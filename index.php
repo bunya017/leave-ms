@@ -31,6 +31,7 @@
               $_SESSION["first_name"] = $row["first_name"];
               $_SESSION["last_name"] = $row["last_name"];
               $_SESSION["staff_pin"] = $row["staff_pin"];
+              $_SESSION["user_id"] = $row["id"];
               $_SESSION["isLoggedIn"] = true;
               $role_id = $row["role_id"];
               $role_sql = "SELECT * FROM `roles` WHERE id='$role_id'";

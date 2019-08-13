@@ -3,7 +3,7 @@
   require("../config.php");
   if (isset($_SESSION["isLoggedIn"]) and ($_SESSION["isLoggedIn"] === TRUE)) {
     $staff = $_SESSION["staff_pin"];
-    $query = "SELECT * FROM `users` WHERE `staff_pin`='$staff'";
+    $query = "SELECT * FROM `users` WHERE staff_pin='$staff'";
     $result = $conn->query($query);
     if (isset($_POST['editStaffProfile'])) {
       if (empty($_POST["email"])) {
@@ -14,6 +14,18 @@
       }
       if (empty($_POST["last_name"])) {
         $_SESSION["lastNameEditError"] = true;
+      }
+    }
+    if (isset($_POST['editStaffProfile'], $_POST["email"], $_POST["first_name"], $_POST["last_name"])) {
+      $email = stripcslashes($_POST['email']);
+      $first_name = stripcslashes($_POST['first_name']);
+      $last_name = stripcslashes($_POST['last_name']);
+      $profileUpdateQuery = "UPDATE `users` SET email='$email', first_name='$first_name', last_name='$last_name'
+        WHERE staff_pin='$staff'";
+      if ($conn->query($profileUpdateQuery) === TRUE) {
+        echo "Updated!";
+      } elseif (strpos($conn->error, "'email'") > 0) {
+        $_SESSION["emailEditDupError"] = true;
       }
     }
   }
@@ -40,9 +52,9 @@
     </nav>
     <div class="container">
       <div class="row">
-        <div class="col-8 mx-auto">
+        <div class="col-12 col-md-8 mx-auto">
           <div class="row py-2">
-            <div class="col-10 mx-auto">
+            <div class="col-sm-12 col-md-10 mx-auto">
               <?php if ($result->num_rows > 0): $row = $result->fetch_assoc();?>
                 <div class="card shadow-lg border-0">
                   <div class="card-header">
@@ -64,6 +76,9 @@
                           if (isset($_SESSION["emailEditError"]) && ($_SESSION["emailEditError"] === true)) {
                             echo '<small class="text-danger"><strong>This field is required!</strong></small>';
                             $_SESSION["emailEditError"] = NULL;
+                          } elseif (isset($_SESSION["emailEditDupError"]) && ($_SESSION["emailEditDupError"] === true)) {
+                            echo '<small class="text-danger"><strong>This email is already in use!</strong></small>';
+                            $_SESSION["emailEditDupError"] = NULL;
                           }
                         ?>
                       </div>

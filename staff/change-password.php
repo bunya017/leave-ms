@@ -5,6 +5,16 @@
     $staff = $_SESSION['staff_pin'];
     $query = "SELECT password FROM `users` WHERE staff_pin='$staff'";
     $result = $conn->query($query);
+    if (isset($_POST["changePassword"])) {
+      if (empty($_POST["oldPassword"])) {
+        $_SESSION["oldPassError"] = true;
+      }
+      if (empty($_POST["newPassword"])) {
+        $_SESSION["newPassError"] = true;
+      } elseif ($_POST["newPassword"] == $_POST["oldPassword"]) {
+        $_SESSION["samePassError"] = true;
+      }
+    }
   }
 ?>
 <!DOCTYPE html>
@@ -39,14 +49,34 @@
                   </h3>
                 </div>
                 <div class="card-body">
-                  <form>
+                <?php
+                  if (isset($_SESSION["samePassError"]) && ($_SESSION["samePassError"] === TRUE)) {
+                    echo '<div class="alert alert-danger alert-dismissible text-center my-3"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>New password cannot be same as the old password!</strong></div>';
+                    $_SESSION["samePassError"] = NULL;
+                  }
+                ?>
+                  <form method="post">
                     <div class="form-group">
                       <label>Old password:</label>
                       <input type="password" required="" name="oldPassword" class="form-control">
+                      <?php
+                        // Catch empty field error
+                        if (isset($_SESSION["oldPassError"]) && ($_SESSION["oldPassError"] === true)) {
+                          echo '<small class="text-danger"><strong>This field is required!</strong></small>';
+                          $_SESSION["oldPassError"] = NULL;
+                        }
+                      ?>
                     </div>
                     <div class="form-group">
                       <label>New password:</label>
-                      <input type="password" required="" name="newPassword"  class="form-control">
+                      <input type="password" required="" name="newPassword" class="form-control">
+                      <?php
+                        // Catch empty field error
+                        if (isset($_SESSION["newPassError"]) && ($_SESSION["newPassError"] === true)) {
+                          echo '<small class="text-danger"><strong>This field is required!</strong></small>';
+                          $_SESSION["newPassError"] = NULL;
+                        }
+                      ?>
                     </div>
                     <!-- Modal footer -->
                     <div class="modal-footer border-0">

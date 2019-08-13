@@ -40,7 +40,7 @@
               $_SESSION["can_forward_to_director"] = $role_row["can_forward_to_director"];
               $_SESSION["can_forward_to_registrar"] = $role_row["can_forward_to_registrar"];
               if ($role_row["name"] === "staff") {
-                header("location: staff/dashboard.html");
+                header("location: staff/dashboard.php");
               } elseif ($role_row["name"] === "director" or "registrar" or "head_ict") {
                 header("location: admin/dashboard.php");
               } else {

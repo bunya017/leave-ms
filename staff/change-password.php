@@ -1,3 +1,12 @@
+<?php
+  session_start();
+  require("../config.php");
+  if (isset($_SESSION["isLoggedIn"]) and ($_SESSION["isLoggedIn"] === TRUE)) {
+    $staff = $_SESSION['staff_pin'];
+    $query = "SELECT password FROM `users` WHERE staff_pin='$staff'";
+    $result = $conn->query($query);
+  }
+?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -33,18 +42,18 @@
                   <form>
                     <div class="form-group">
                       <label>Old password:</label>
-                      <input type="text" class="form-control">
+                      <input type="password" required="" name="oldPassword" class="form-control">
                     </div>
                     <div class="form-group">
                       <label>New password:</label>
-                      <input type="text" class="form-control">
+                      <input type="password" required="" name="newPassword"  class="form-control">
                     </div>
                     <!-- Modal footer -->
                     <div class="modal-footer border-0">
                       <a class="btn btn-outline-secondary" href="profile.php">
                         CANCEL
                       </a>
-                      <button class="btn btn-dark">
+                      <button class="btn btn-dark" name="changePassword">
                         CHANGE PASSWORD
                       </button>
                     </div>

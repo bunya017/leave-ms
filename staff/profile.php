@@ -36,6 +36,9 @@
               if (isset($_SESSION["staffProfileEdited"]) && ($_SESSION["staffProfileEdited"] === TRUE)) {
                 echo '<div class="col-8 mx-auto"><div class="alert alert-success alert-dismissible text-center"><button type="button" class="close" data-dismiss="alert">&times;</button>Profile updated successfully!</div></div>';
                 $_SESSION["staffProfileEdited"] = NULL;
+              } elseif (isset($_SESSION["passwordChanged"]) && ($_SESSION["passwordChanged"] === TRUE)) {
+                echo '<div class="col-8 mx-auto"><div class="alert alert-success alert-dismissible text-center"><button type="button" class="close" data-dismiss="alert">&times;</button>Password changed successfully!</div></div>';
+                $_SESSION["passwordChanged"] = NULL;
               }
             ?>
             <div class="col-10 mx-auto">

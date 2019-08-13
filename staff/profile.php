@@ -165,4 +165,10 @@
       background-color: #f4f3f4 !important;
     }
   </style>
+  <script>
+    setTimeout(function () { // Hide alert after 5 seconds
+        $(".alert").alert('close');
+      }, 5000
+    );
+  </script>
 </html>

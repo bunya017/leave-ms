@@ -13,6 +13,22 @@
         $_SESSION["newPassError"] = true;
       } elseif ($_POST["newPassword"] == $_POST["oldPassword"]) {
         $_SESSION["samePassError"] = true;
+      } else {
+        if ($result->num_rows > 0) {
+          $row = $result->fetch_assoc();
+          $oldPassword = $_POST["oldPassword"];
+          $newPassword = $_POST["newPassword"];
+          if (password_verify($oldPassword, $row["password"])) {
+            $changePasswordQuery = "UPDATE `users` SET password='$newPassword' WHERE staff_pin='$staff'";
+            if ($conn->query($changePasswordQuery) === TRUE) {
+              $_SESSION["passwordChanged"] = true;
+              $_POST = NULL;
+              echo "Changed!";
+            }
+          } else {
+            $_SESSION["wrongPassError"] = true;
+          }
+        }
       }
     }
   }
@@ -61,9 +77,12 @@
                       <input type="password" required="" name="oldPassword" class="form-control">
                       <?php
                         // Catch empty field error
-                        if (isset($_SESSION["oldPassError"]) && ($_SESSION["oldPassError"] === true)) {
+                        if (isset($_SESSION["oldPassError"]) && ($_SESSION["oldPassError"] === TRUE)) {
                           echo '<small class="text-danger"><strong>This field is required!</strong></small>';
                           $_SESSION["oldPassError"] = NULL;
+                        } elseif (isset($_SESSION["wrongPassError"]) && ($_SESSION["wrongPassError"] === TRUE)) {
+                          echo '<small class="text-danger"><strong>You have entered the wrong password!</strong></small>';
+                          $_SESSION["wrongPassError"] = NULL;
                         }
                       ?>
                     </div>
@@ -72,7 +91,7 @@
                       <input type="password" required="" name="newPassword" class="form-control">
                       <?php
                         // Catch empty field error
-                        if (isset($_SESSION["newPassError"]) && ($_SESSION["newPassError"] === true)) {
+                        if (isset($_SESSION["newPassError"]) && ($_SESSION["newPassError"] === TRUE)) {
                           echo '<small class="text-danger"><strong>This field is required!</strong></small>';
                           $_SESSION["newPassError"] = NULL;
                         }

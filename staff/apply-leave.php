@@ -89,7 +89,7 @@
                     <form method="post">
                       <div class="form-group">
                         <label>Purpose:</label>
-                        <input type="text" name="purpose" value="<?php if(isset($_POST['purpose'])){echo($_POST['purpose']);} ?>" class="form-control">
+                        <input type="text" required="" name="purpose" value="<?php if(isset($_POST['purpose'])){echo($_POST['purpose']);} ?>" class="form-control">
                         <?php
                           // Catch empty field error
                           if (isset($_SESSION["purposeError"]) && ($_SESSION["purposeError"] === TRUE)) {
@@ -100,7 +100,7 @@
                       </div>
                       <div class="form-group">
                         <label>Start Date:</label>
-                        <input type="date" name="start_date" value="<?php if(isset($_POST['start_date'])){echo($_POST['start_date']);} ?>" class="form-control">
+                        <input type="date" required="" name="start_date" value="<?php if(isset($_POST['start_date'])){echo($_POST['start_date']);} ?>" class="form-control">
                         <?php
                           // Catch empty field error
                           if (isset($_SESSION["startDateError"]) && ($_SESSION["startDateError"] === TRUE)) {
@@ -117,7 +117,7 @@
                       </div>
                       <div class="form-group">
                         <label>End Date:</label>
-                        <input type="date" name="stop_date" value="<?php if(isset($_POST['stop_date'])){echo($_POST['stop_date']);} ?>" class="form-control">
+                        <input type="date" required="" name="stop_date" value="<?php if(isset($_POST['stop_date'])){echo($_POST['stop_date']);} ?>" class="form-control">
                         <?php
                           // Catch empty field error
                           if (isset($_SESSION["stopDateError"]) && ($_SESSION["stopDateError"] === TRUE)) {
@@ -130,7 +130,7 @@
                         ?>
                       </div>
                       <div class="form-group">
-                        <label>Extra Information:</label>
+                        <label>Extra Information <small><i>(Optional)</i></small>:</label>
                         <textarea class="form-control" name="extra_information" value="<?php if(isset($_POST['extra_information'])){echo($_POST['extra_information']);} ?>" rows="3"></textarea>
                       </div>
                       <!-- Modal footer -->

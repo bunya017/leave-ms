@@ -23,7 +23,9 @@
       $profileUpdateQuery = "UPDATE `users` SET email='$email', first_name='$first_name', last_name='$last_name'
         WHERE staff_pin='$staff'";
       if ($conn->query($profileUpdateQuery) === TRUE) {
-        echo "Updated!";
+        $_SESSION["staffProfileEdited"] = true;
+        $_POST = NULL;
+        header("location: profile.php");
       } elseif (strpos($conn->error, "'email'") > 0) {
         $_SESSION["emailEditDupError"] = true;
       }

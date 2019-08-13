@@ -32,6 +32,12 @@
         <div class="col-10 mx-auto">
           <!-- Profile details card -->
           <div class="row py-5">
+            <?php
+              if (isset($_SESSION["staffProfileEdited"]) && ($_SESSION["staffProfileEdited"] === TRUE)) {
+                echo '<div class="col-8 mx-auto"><div class="alert alert-success alert-dismissible text-center"><button type="button" class="close" data-dismiss="alert">&times;</button>Profile updated successfully!</div></div>';
+                $_SESSION["staffProfileEdited"] = NULL;
+              }
+            ?>
             <div class="col-10 mx-auto">
               <?php if (($result->num_rows > 0)): $row = $result->fetch_assoc();?>
                 <div class="card shadow-lg border-0 pb-3">

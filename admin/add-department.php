@@ -39,7 +39,7 @@
   </head>
   <body>
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-      <a class="navbar-brand ml-auto" href="employee-leave.html">
+      <a class="navbar-brand ml-auto" href="dashboard.php">
         Leave MS <span class="badge badge-info">Admin</span>
       </a>
       <ul class="navbar-nav offset-md-6 offset-1 mr-auto">

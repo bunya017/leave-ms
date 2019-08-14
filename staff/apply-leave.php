@@ -37,13 +37,21 @@
       $purpose = stripcslashes($_POST['purpose']);
       $start_date = stripcslashes($_POST['start_date']); // To be used for SQL query
       $stop_date = stripcslashes($_POST['stop_date']); // To be used for SQL query
-      $startDate = strtotime(stripcslashes($_POST['start_date']));
-      $stopDate = strtotime(stripcslashes($_POST['stop_date']));
-      $interval = ($stopDate -  $startDate) / 60 / 60 / 24; // Division to return interval in days
+      $start = date_create($start_date);
+      $stop = date_create($stop_date);
+      $now = date_create("now");
+      $interval = date_diff($stop, $start)->format("%a");
+      echo $interval;
       if (($interval > $staffLeaveDaysLeft) && ($staffLeaveDaysLeft == $staffLeaveDays)) {
         $_SESSION["aboveLeaveDaysError"] = true;
       } elseif (($interval > $staffLeaveDaysLeft) && ($staffLeaveDaysLeft < $staffLeaveDays)) {
         $_SESSION["aboveLeaveDaysLeftError"] = true;
+      } elseif ($start > $stop) {
+          $_SESSION["negativeDateError"] = true;
+      } elseif ($now > $start) {
+        $_SESSION["startLessThanToday"] = true;
+      } elseif ($now > $stop) {
+        $_SESSION["stopLessThanToday"] = true;
       } else {
         if (isset($_POST["extra_information"]) && (!empty($_POST["extra_information"]))) {
           $extra_information = htmlspecialchars($_POST['extra_information'], ENT_QUOTES);
@@ -104,7 +112,7 @@
                     <form method="post">
                       <div class="form-group">
                         <label>Purpose:</label>
-                        <input type="text" required="" name="purpose" value="<?php if(isset($_POST['purpose'])){echo($_POST['purpose']);} ?>" class="form-control">
+                        <input type="text" name="purpose" value="<?php if(isset($_POST['purpose'])){echo($_POST['purpose']);} ?>" class="form-control">
                         <?php
                           // Catch empty field error
                           if (isset($_SESSION["purposeError"]) && ($_SESSION["purposeError"] === TRUE)) {
@@ -146,7 +154,7 @@
                       </div>
                       <div class="form-group">
                         <label>Extra Information <small><i>(Optional)</i></small>:</label>
-                        <textarea class="form-control" name="extra_information" value="<?php if(isset($_POST['extra_information'])){echo($_POST['extra_information']);} ?>" rows="3"></textarea>
+                        <textarea class="form-control" name="extra_information"rows="3"><?php if(isset($_POST['extra_information'])) {echo trim($_POST['extra_information']);} ?></textarea>
                       </div>
                       <!-- Modal footer -->
                       <div class="modal-footer border-0">

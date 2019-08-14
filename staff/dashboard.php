@@ -8,6 +8,9 @@
     $result = $conn->query($query);
     if (($result->num_rows > 0)){
       $staffRow = $result->fetch_assoc();
+      $approved = 0;
+      $disapproved = 0;
+      $pending = 0;
       $staff = array('staff_pin' => $staffRow['staff_pin'], 'email' => $staffRow['email'],
         'first_name' => $staffRow['first_name'], 'last_name' => $staffRow['last_name'],
         'department_id' => $staffRow['department_id'], 'total_leave_days' => $staffRow['total_leave_days'],
@@ -20,6 +23,17 @@
         'to_registrar' => $staffRow['to_registrar'], 'approval_status' => $staffRow['approval_status'],
         'approval_date' => $staffRow['approval_date']
       );
+      switch ($staffRow["approval_status"]) {
+        case "0":
+          ++$disapproved;
+          break;
+        case "1":
+          ++$approved;
+          break;
+        default:
+          ++$pending;
+          break;
+      }
       while ($row = $result->fetch_assoc()) {
         $leave_applications[] = array(
           'id' => $row['id'], 'purpose' => $row['purpose'], 'application_date' => $row['application_date'],
@@ -28,6 +42,17 @@
           'to_registrar' => $row['to_registrar'], 'approval_status' => $row['approval_status'],
           'approval_date' => $row['approval_date']
         );
+        switch ($row["approval_status"]) {
+          case "0":
+            ++$disapproved;
+            break;
+          case "1":
+            ++$approved;
+            break;
+          default:
+            ++$pending;
+            break;
+        }
       }
     }
   }
@@ -64,15 +89,15 @@
             <div class="col-12 col-sm-6 col-lg-3 py-2 py-lg-0">
               <div class="card shadow-lg" style="min-height: 100px;">
                 <div class="text-center py-3">
-                  <h2>16 <i class="fa fa-door-open"></i></h2>
-                  <h6>Leave Days Left of 30</h6>
+                  <h2><?php echo $staff["leave_days_left"] ?> <i class="fa fa-door-open"></i></h2>
+                  <h6><?php echo "Leave Days Left of " . $staff["total_leave_days"] ?></h6>
                 </div>
               </div>
             </div>
             <div class="col-12 col-sm-6 col-lg-3 py-2 py-lg-0">
               <div class="card shadow-lg" style="min-height: 100px;">
                 <div class="text-center py-3">
-                  <h2 class="text-success">1 <i class="fa fa-door-open"></i></h2>
+                  <h2 class="text-success"><?php echo $approved ?> <i class="fa fa-door-open"></i></h2>
                   <h6>Leave Approved</h6>
                 </div>
               </div>
@@ -80,7 +105,7 @@
             <div class="col-12 col-sm-6 col-lg-3 py-2 py-lg-0">
               <div class="card shadow-lg" style="min-height: 100px;">
                 <div class="text-center py-3">
-                  <h2 class="text-warning">1 <i class="fa fa-door-open"></i></h2>
+                  <h2 class="text-warning"><?php echo $pending ?> <i class="fa fa-door-open"></i></h2>
                   <h6>Leave Pending Approval</h6>
                 </div>
               </div>
@@ -88,7 +113,7 @@
             <div class="col-12 col-sm-6 col-lg-3 py-2 py-lg-0">
               <div class="card shadow-lg" style="min-height: 100px;">
                 <div class="text-center py-3">
-                  <h2 class="text-danger">1 <i class="fa fa-door-open"></i></h2>
+                  <h2 class="text-danger"><?php echo $disapproved ?> <i class="fa fa-door-open"></i></h2>
                   <h6>Disapproved Leave</h6>
                 </div>
               </div>

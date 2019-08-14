@@ -11,6 +11,7 @@
       $approved = 0;
       $disapproved = 0;
       $pending = 0;
+      $index = 0;
       $staff = array('staff_pin' => $staffRow['staff_pin'], 'email' => $staffRow['email'],
         'first_name' => $staffRow['first_name'], 'last_name' => $staffRow['last_name'],
         'department_id' => $staffRow['department_id'], 'total_leave_days' => $staffRow['total_leave_days'],
@@ -158,38 +159,51 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>02-Aug-2019</td>
-                  <td>Weekend</td>
-                  <td>2 Days</td>
-                  <td><span class="badge badge-warning">Pending</span></td>
-                  <td><span class="badge badge-warning">Pending</span></td>
-                  <td>
-                    <button class="btn btn-outline-dark btn-sm" data-toggle="modal" data-target="#viewLeaveDetail">VIEW
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>22-Jan-2019</td>
-                  <td>Maternity</td>
-                  <td>14 Days</td>
-                  <td>25-Jan-2019</td>
-                  <td><span class="badge badge-success">Approved</span></td>
-                  <td><button class="btn btn-outline-dark btn-sm" data-toggle="modal" data-target="#viewLeaveDetail">VIEW</button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>12-Jul-2018</td>
-                  <td>Chilling</td>
-                  <td>12 Days</td>
-                  <td>14-Jul-2018</td>
-                  <td><span class="badge badge-danger">Disapproved</span></td>
-                  <td><button class="btn btn-outline-dark btn-sm" data-toggle="modal" data-target="#viewLeaveDetail">VIEW</button>
-                  </td>
-                </tr>
+                <?php foreach ($leave_applications as $leave_application): ++$index; ?>
+                  <tr>
+                    <td><?php echo $index; ?></td>
+                    <td><?php echo date('d-M-Y', strtotime($leave_application['application_date'])); ?></td>
+                    <td><?php echo $leave_application["purpose"]; ?></td>
+                    <td>
+                      <?php
+                        $start = date_create($leave_application["start_date"]);
+                        $stop = date_create($leave_application["stop_date"]);
+                        echo date_diff($stop, $start)->format("%a Days");
+                      ?>
+                    </td>
+                    <td>
+                      <?php
+                        switch ($leave_application["approval_date"]) {
+                          case NULL:
+                            echo '<span class="badge badge-warning">Pending</span>';
+                            break;
+                          default:
+                            echo date('d-M-Y', strtotime($leave_application['approval_date']));
+                            break;
+                        }
+                      ?>
+                    </td>
+                    <td>
+                      <?php
+                        switch ($leave_application["approval_status"]) {
+                          case NULL:
+                            echo '<span class="badge badge-warning">Pending</span>';
+                            break;
+                          case '0':
+                            echo '<span class="badge badge-danger">Disapproved</span>';
+                            break;
+                          case '1':
+                            echo '<span class="badge badge-success">Approved</span>';
+                            break;
+                        }
+                      ?>
+                    </td>
+                    <td>
+                      <button class="btn btn-outline-dark btn-sm" data-toggle="modal" data-target="#viewLeaveDetail">VIEW
+                      </button>
+                    </td>
+                  </tr>
+                <?php endforeach ?>
               </tbody>
             </table>
           </div>

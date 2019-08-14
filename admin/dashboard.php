@@ -1,3 +1,13 @@
+<?php
+  session_start();
+  require("../config.php");
+  if (isset($_SESSION["isLoggedIn"]) and ($_SESSION["isLoggedIn"] === TRUE)) {
+    $staffPin = $_SESSION['staff_pin'];
+    $userId = $_SESSION['user_id'];
+    $query = "SELECT `employee_leave`.*, `users`.`first_name`, `users`.`last_name` FROM `employee_leave` JOIN `users` WHERE `users`.`id`=`employee_leave`.`user_id`";
+    $result = $conn->query($query);
+  }
+?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -10,10 +20,6 @@
     <script src="../static/js/bootstrap.min.js"></script>
   </head>
   <body>
-    <?php
-      session_start();
-      var_dump($_SESSION);
-    ?>
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
       <a class="navbar-brand ml-auto" href="">
         Leave MS <span class="badge badge-info">Admin</span>

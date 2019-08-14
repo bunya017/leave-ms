@@ -199,8 +199,7 @@
                       ?>
                     </td>
                     <td>
-                      <button class="btn btn-outline-dark btn-sm" data-toggle="modal" data-target="#viewLeaveDetail">VIEW
-                      </button>
+                      <a class="btn btn-outline-dark btn-sm" href="<?php echo 'leave-detail.php?e=' . $leave_application['id'] ?>">VIEW</a>
                     </td>
                   </tr>
                 <?php endforeach ?>

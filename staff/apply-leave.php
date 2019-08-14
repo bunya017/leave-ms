@@ -33,14 +33,29 @@
       }
     }
     if (isset($_POST["applyLeave"], $_POST["purpose"], $_POST["start_date"],$_POST["stop_date"])) {
+      $user_id = $_SESSION["user_id"];
       $purpose = stripcslashes($_POST['purpose']);
-      $start_date = strtotime(stripcslashes($_POST['start_date']));
-      $stop_date = strtotime(stripcslashes($_POST['stop_date']));
-      $interval = ($stop_date -  $start_date) / 60 / 60 / 24; // Division to return interval in days
+      $start_date = stripcslashes($_POST['start_date']); // To be used for SQL query
+      $stop_date = stripcslashes($_POST['stop_date']); // To be used for SQL query
+      $startDate = strtotime(stripcslashes($_POST['start_date']));
+      $stopDate = strtotime(stripcslashes($_POST['stop_date']));
+      $interval = ($stopDate -  $startDate) / 60 / 60 / 24; // Division to return interval in days
       if (($interval > $staffLeaveDaysLeft) && ($staffLeaveDaysLeft == $staffLeaveDays)) {
         $_SESSION["aboveLeaveDaysError"] = true;
       } elseif (($interval > $staffLeaveDaysLeft) && ($staffLeaveDaysLeft < $staffLeaveDays)) {
         $_SESSION["aboveLeaveDaysLeftError"] = true;
+      } else {
+        if (isset($_POST["extra_information"]) && (!empty($_POST["extra_information"]))) {
+          $extra_information = stripcslashes($_POST['extra_information']);
+          $leaveQuery = "INSERT into `employee_leave` (purpose, start_date, stop_date, extra_information, user_id) VALUES ('$purpose', '$start_date', '$stop_date' '$extra_information', '$user_id')";
+        } else {
+          $leaveQuery = "INSERT into `employee_leave` (purpose, start_date, stop_date, user_id) VALUES ('$purpose', '$start_date', '$stop_date', '$user_id')";
+        }
+        if ($conn->query($leaveQuery) === TRUE) {
+          $_SESSION["leaveApplied"] = true;
+          $_POST = NULL;
+          header("location: dashboard.php");
+        }
       }
     }
   }

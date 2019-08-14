@@ -46,8 +46,8 @@
         $_SESSION["aboveLeaveDaysLeftError"] = true;
       } else {
         if (isset($_POST["extra_information"]) && (!empty($_POST["extra_information"]))) {
-          $extra_information = stripcslashes($_POST['extra_information']);
-          $leaveQuery = "INSERT into `employee_leave` (purpose, start_date, stop_date, extra_information, user_id) VALUES ('$purpose', '$start_date', '$stop_date' '$extra_information', '$user_id')";
+          $extra_information = htmlspecialchars($_POST['extra_information'], ENT_QUOTES);
+          $leaveQuery = "INSERT into `employee_leave` (purpose, start_date, stop_date, extra_information, user_id) VALUES ('$purpose', '$start_date', '$stop_date', '$extra_information', '$user_id')";
         } else {
           $leaveQuery = "INSERT into `employee_leave` (purpose, start_date, stop_date, user_id) VALUES ('$purpose', '$start_date', '$stop_date', '$user_id')";
         }

@@ -6,6 +6,18 @@
     $userId = $_SESSION['user_id'];
     $query = "SELECT `employee_leave`.*, `users`.`first_name`, `users`.`last_name` FROM `employee_leave` JOIN `users` WHERE `users`.`id`=`employee_leave`.`user_id`";
     $result = $conn->query($query);
+    if (($result->num_rows > 0)){
+      $index = 0;
+      while ($row = $result->fetch_assoc()) {
+        $leave_applications[] = array(
+          'id' => $row['id'], 'purpose' => $row['purpose'], 'application_date' => $row['application_date'],
+          'start_date' => $row['start_date'], 'stop_date' => $row['stop_date'],
+          'extra_information' => $row['extra_information'], 'to_director' => $row['to_director'],
+          'to_registrar' => $row['to_registrar'], 'approval_status' => $row['approval_status'],
+          'approval_date' => $row['approval_date'], 'full_name' => $row['first_name'] . ' ' . $row['last_name']
+        );
+      }
+    }
   }
 ?>
 <!DOCTYPE html>
@@ -54,7 +66,7 @@
                 <tr>
                   <th>#</th>
                   <th>Employee</th>
-                  <th>Applictaion Date</th>
+                  <th>Application Date</th>
                   <th>Purpose</th>
                   <th>Period</th>
                   <th>Approval Date</th>
@@ -63,42 +75,51 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>Jane Mikel</td>
-                  <td>02-Aug-2019</td>
-                  <td>Weekend</td>
-                  <td>2 Days</td>
-                  <td><span class="badge badge-warning">Pending</span></td>
-                  <td><span class="badge badge-warning">Pending</span></td>
-                  <td>
-                    <a class="btn btn-outline-dark btn-sm" href="employee-leave-detail.html">VIEW</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Jane Mikel</td>
-                  <td>22-Jan-2019</td>
-                  <td>Maternity</td>
-                  <td>14 Days</td>
-                  <td>25-Jan-2019</td>
-                  <td><span class="badge badge-success">Approved</span></td>
-                  <td>
-                    <a class="btn btn-outline-dark btn-sm" href="employee-leave-detail.html">VIEW</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>Jane Mikel</td>
-                  <td>12-Jul-2018</td>
-                  <td>Chilling</td>
-                  <td>12 Days</td>
-                  <td>14-Jul-2018</td>
-                  <td><span class="badge badge-danger">Disapproved</span></td>
-                  <td>
-                    <a class="btn btn-outline-dark btn-sm" href="employee-leave-detail.html">VIEW</a>
-                  </td>
-                </tr>
+                <?php foreach ($leave_applications as $leave_application): ++$index; ?>
+                  <tr>
+                    <td><?php echo $index; ?></td>
+                    <td><?php echo $leave_application["full_name"]; ?></td>
+                    <td><?php echo date('d-M-Y', strtotime($leave_application['application_date'])); ?></td>
+                    <td><?php echo $leave_application["purpose"]; ?></td>
+                    <td>
+                      <?php
+                        $start = date_create($leave_application["start_date"]);
+                        $stop = date_create($leave_application["stop_date"]);
+                        echo date_diff($stop, $start)->format("%a Days");
+                      ?>
+                    </td>
+                    <td>
+                      <?php
+                        switch ($leave_application["approval_date"]) {
+                          case NULL:
+                            echo '<span class="badge badge-warning">Pending</span>';
+                            break;
+                          default:
+                            echo date('d-M-Y', strtotime($leave_application['approval_date']));
+                            break;
+                        }
+                      ?>
+                    </td>
+                    <td>
+                      <?php
+                        switch ($leave_application["approval_status"]) {
+                          case NULL:
+                            echo '<span class="badge badge-warning">Pending</span>';
+                            break;
+                          case '0':
+                            echo '<span class="badge badge-danger">Disapproved</span>';
+                            break;
+                          case '1':
+                            echo '<span class="badge badge-success">Approved</span>';
+                            break;
+                        }
+                      ?>
+                    </td>
+                    <td>
+                      <a class="btn btn-outline-dark btn-sm" href="<?php// echo 'leave-detail.php?e=' . $leave_application['id'] ?>">VIEW</a>
+                    </td>
+                  </tr>
+                <?php endforeach ?>
               </tbody>
             </table>
           </div>

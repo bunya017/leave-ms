@@ -1,6 +1,5 @@
 <?php
   session_start();
-  var_dump($_SESSION);
 ?>
 <!DOCTYPE html>
 <html>
@@ -70,6 +69,12 @@
       <!-- leave section -->
       <div class="row py-5">
         <div class="col-10 mx-auto">
+          <?php
+            if (isset($_SESSION["leaveApplied"]) && ($_SESSION["leaveApplied"] === TRUE)) {
+              echo '<div class="col-8 mx-auto"><div class="alert alert-success alert-dismissible text-center"><button type="button" class="close" data-dismiss="alert">&times;</button>Leave applied successfully!</div></div>';
+              $_SESSION["leaveApplied"] = NULL;
+            }
+          ?>
           <!-- Title -->
           <div class="row align-items-center py-3">
             <div class="col-6">

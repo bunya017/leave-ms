@@ -1,3 +1,6 @@
+<?php
+  session_start();
+?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -15,7 +18,7 @@
       <a class="navbar-brand ml-auto" href="">Leave MS</a>
       <ul class="navbar-nav offset-md-8 offset-1 mr-auto">
         <li class="nav-item">
-          <a class="nav-link" href="profile.html">My profile</a>
+          <a class="nav-link" href="profile.php">My profile</a>
         </li>
       </ul>
     </nav>
@@ -66,15 +69,21 @@
       <!-- leave section -->
       <div class="row py-5">
         <div class="col-10 mx-auto">
+          <?php
+            if (isset($_SESSION["leaveApplied"]) && ($_SESSION["leaveApplied"] === TRUE)) {
+              echo '<div class="col-8 mx-auto"><div class="alert alert-success alert-dismissible text-center"><button type="button" class="close" data-dismiss="alert">&times;</button>Leave applied successfully!</div></div>';
+              $_SESSION["leaveApplied"] = NULL;
+            }
+          ?>
           <!-- Title -->
           <div class="row align-items-center py-3">
             <div class="col-6">
               <h2>Leave Applications</h2>
             </div>
             <div class="col-6">
-              <button type="button" class="btn btn-dark float-right" data-toggle="modal" data-target="#newLeaveModal">
+              <a class="btn btn-dark float-right" href="apply-leave.php">
                 APPLY FOR LEAVE
-              </button>
+              </a>
             </div>
           </div>
 
@@ -101,7 +110,7 @@
                   <td><span class="badge badge-warning">Pending</span></td>
                   <td><span class="badge badge-warning">Pending</span></td>
                   <td>
-                    <button type="button" class="btn btn-outline-dark btn-sm" data-toggle="modal" data-target="#viewLeaveDetail">VIEW
+                    <button class="btn btn-outline-dark btn-sm" data-toggle="modal" data-target="#viewLeaveDetail">VIEW
                     </button>
                   </td>
                 </tr>
@@ -112,7 +121,7 @@
                   <td>14 Days</td>
                   <td>25-Jan-2019</td>
                   <td><span class="badge badge-success">Approved</span></td>
-                  <td><button type="button" class="btn btn-outline-dark btn-sm" data-toggle="modal" data-target="#viewLeaveDetail">VIEW</button>
+                  <td><button class="btn btn-outline-dark btn-sm" data-toggle="modal" data-target="#viewLeaveDetail">VIEW</button>
                   </td>
                 </tr>
                 <tr>
@@ -122,58 +131,11 @@
                   <td>12 Days</td>
                   <td>14-Jul-2018</td>
                   <td><span class="badge badge-danger">Disapproved</span></td>
-                  <td><button type="button" class="btn btn-outline-dark btn-sm" data-toggle="modal" data-target="#viewLeaveDetail">VIEW</button>
+                  <td><button class="btn btn-outline-dark btn-sm" data-toggle="modal" data-target="#viewLeaveDetail">VIEW</button>
                   </td>
                 </tr>
               </tbody>
             </table>
-          </div>
-
-          <!-- New Leave Application Modal -->
-          <div class="modal" id="newLeaveModal" data-backdrop="static" tabindex="-1">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <!-- Modal Header -->
-                <div class="modal-header">
-                  <h4 class="modal-title">New Leave Application</h4>
-                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <!-- Modal body -->
-                <div class="modal-body">
-                  <div class="row">
-                    <div class="col-11 mx-auto">
-                      <form>
-                        <div class="form-group">
-                          <label>Start Date:</label>
-                          <input type="date" class="form-control">
-                        </div>
-                        <div class="form-group">
-                          <label>End Date:</label>
-                          <input type="date" class="form-control">
-                        </div>
-                        <div class="form-group">
-                          <label>Purpose:</label>
-                          <input type="text" class="form-control">
-                        </div>
-                        <div class="form-group">
-                          <label>Extra information:</label>
-                          <textarea class="form-control" rows="3"></textarea>
-                        </div>
-                        <!-- Modal footer -->
-                        <div class="modal-footer border-0">
-                          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
-                            CANCEL
-                          </button>
-                          <button type="button" class="btn btn-dark" data-dismiss="modal">
-                            APPLY FOR LEAVE
-                          </button>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
 
           <!-- View Leave Modal -->
@@ -183,7 +145,7 @@
                 <!-- Modal Header -->
                 <div class="modal-header">
                   <h4 class="modal-title">Chilling</h4>
-                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <button class="close" data-dismiss="modal">&times;</button>
                 </div>
                 <!-- Modal body -->
                 <div class="modal-body">
@@ -226,7 +188,7 @@
                 </div>
                 <!-- Modal footer -->
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                  <button class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
                 </div>
 
               </div>

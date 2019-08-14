@@ -31,6 +31,7 @@
               $_SESSION["first_name"] = $row["first_name"];
               $_SESSION["last_name"] = $row["last_name"];
               $_SESSION["staff_pin"] = $row["staff_pin"];
+              $_SESSION["user_id"] = $row["id"];
               $_SESSION["isLoggedIn"] = true;
               $role_id = $row["role_id"];
               $role_sql = "SELECT * FROM `roles` WHERE id='$role_id'";
@@ -40,7 +41,7 @@
               $_SESSION["can_forward_to_director"] = $role_row["can_forward_to_director"];
               $_SESSION["can_forward_to_registrar"] = $role_row["can_forward_to_registrar"];
               if ($role_row["name"] === "staff") {
-                header("location: staff/dashboard.html");
+                header("location: staff/dashboard.php");
               } elseif ($role_row["name"] === "director" or "registrar" or "head_ict") {
                 header("location: admin/dashboard.php");
               } else {

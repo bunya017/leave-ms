@@ -207,65 +207,6 @@
               </tbody>
             </table>
           </div>
-
-          <!-- View Leave Modal -->
-          <div class="modal" id="viewLeaveDetail" data-backdrop="static" tabindex="-1">
-            <div class="modal-dialog modal-lg">
-              <div class="modal-content">
-                <!-- Modal Header -->
-                <div class="modal-header">
-                  <h4 class="modal-title">Chilling</h4>
-                  <button class="close" data-dismiss="modal">&times;</button>
-                </div>
-                <!-- Modal body -->
-                <div class="modal-body">
-                  <div class="row py-3">
-                    <h4 class="col-6">Application Date</h4>
-                    <h4 class="col-6">
-                      <span class="font-weight-light">12-Jul-2018</span>
-                    </h4>
-                    <h4 class="col-6">Purpose</h4>
-                    <h4 class="col-6">
-                      <span class="font-weight-light">Chilling</span>
-                    </h4>
-                    <h4 class="col-6">Period</h4>
-                    <h4 class="col-6">
-                      <span class="font-weight-light">12 Days</span>
-                    </h4>
-                    <h4 class="col-6">Leave Starts</h4>
-                    <h4 class="col-6">
-                      <span class="font-weight-light">17-Jul-2018</span>
-                    </h4>
-                    <h4 class="col-6">Leave Ends</h4>
-                    <h4 class="col-6">
-                      <span class="font-weight-light">29-Jul-2018</span>
-                    </h4>
-                    <h4 class="col-6">Forwarded to Director</h4>
-                    <h4 class="col-6">
-                      <span class="font-weight-light">Yes</span>
-                    </h4>
-                    <h4 class="col-6">Forwarded to Registrar</h4>
-                    <h4 class="col-6">
-                      <span class="font-weight-light">Yes</span>
-                    </h4>
-                    <h4 class="col-6">Approval Status</h4>
-                    <h4 class="col-6">
-                      <span class="badge badge-danger font-weight-light">
-                        Disapproved
-                      </span>
-                    </h4>
-                  </div>
-                </div>
-                <!-- Modal footer -->
-                <div class="modal-footer">
-                  <button class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
-                </div>
-
-              </div>
-            </div>
-          </div>
-
-
         </div>
       </div>
     </div>

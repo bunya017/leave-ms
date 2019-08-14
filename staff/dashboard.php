@@ -1,5 +1,36 @@
 <?php
   session_start();
+  require("../config.php");
+  if (isset($_SESSION["isLoggedIn"]) and ($_SESSION["isLoggedIn"] === TRUE)) {
+    $staffPin = $_SESSION['staff_pin'];
+    $userId = $_SESSION['user_id'];
+    $query = "SELECT * FROM `users` JOIN `employee_leave` WHERE `users`.`staff_pin`='$staffPin' AND `employee_leave`.`user_id`='$userId'";
+    $result = $conn->query($query);
+    if (($result->num_rows > 0)){
+      $staffRow = $result->fetch_assoc();
+      $staff = array('staff_pin' => $staffRow['staff_pin'], 'email' => $staffRow['email'],
+        'first_name' => $staffRow['first_name'], 'last_name' => $staffRow['last_name'],
+        'department_id' => $staffRow['department_id'], 'total_leave_days' => $staffRow['total_leave_days'],
+        'leave_days_left' => $staffRow['leave_days_left']
+      );
+      $leave_applications[] = array(
+        'id' => $staffRow['id'], 'purpose' => $staffRow['purpose'], 'application_date' => $staffRow['application_date'],
+        'start_date' => $staffRow['start_date'], 'stop_date' => $staffRow['stop_date'],
+        'extra_information' => $staffRow['extra_information'], 'to_director' => $staffRow['to_director'],
+        'to_registrar' => $staffRow['to_registrar'], 'approval_status' => $staffRow['approval_status'],
+        'approval_date' => $staffRow['approval_date']
+      );
+      while ($row = $result->fetch_assoc()) {
+        $leave_applications[] = array(
+          'id' => $row['id'], 'purpose' => $row['purpose'], 'application_date' => $row['application_date'],
+          'start_date' => $row['start_date'], 'stop_date' => $row['stop_date'],
+          'extra_information' => $row['extra_information'], 'to_director' => $row['to_director'],
+          'to_registrar' => $row['to_registrar'], 'approval_status' => $row['approval_status'],
+          'approval_date' => $row['approval_date']
+        );
+      }
+    }
+  }
 ?>
 <!DOCTYPE html>
 <html>

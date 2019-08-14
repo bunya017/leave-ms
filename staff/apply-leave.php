@@ -41,7 +41,6 @@
       $stop = date_create($stop_date);
       $now = date_create("now");
       $interval = date_diff($stop, $start)->format("%a");
-      echo $interval;
       if (($interval > $staffLeaveDaysLeft) && ($staffLeaveDaysLeft == $staffLeaveDays)) {
         $_SESSION["aboveLeaveDaysError"] = true;
       } elseif (($interval > $staffLeaveDaysLeft) && ($staffLeaveDaysLeft < $staffLeaveDays)) {

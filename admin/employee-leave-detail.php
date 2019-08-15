@@ -217,10 +217,10 @@
                   <h1 class="text-dark display-1">404</h1>
                   <p class="lead pb-3">We can't seem to find the page you're looking for.</p>
                   <ul class="list-inline">
-                    <a class="btn btn-outline-dark btn-sm mx-1 text-dark list-inline-item" href="dashboard.php">
+                    <a class="btn btn-outline-dark btn-sm mx-1 list-inline-item" href="dashboard.php">
                       Dashboard
                     </a>
-                    <a class="btn btn-outline-dark btn-sm mx-1 text-dark list-inline-item" href="employees.php">
+                    <a class="btn btn-outline-dark btn-sm mx-1 list-inline-item" href="employees.php">
                       Employees
                     </a>
                   </ul>

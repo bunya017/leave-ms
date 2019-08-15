@@ -1,3 +1,16 @@
+<?php
+  session_start();
+  require("../config.php");
+  if (isset($_SESSION["isLoggedIn"]) and ($_SESSION["isLoggedIn"] === TRUE)) {
+    $can_forward_to_director = $_SESSION["can_forward_to_director"];
+    $can_forward_to_registrar = $_SESSION["can_forward_to_registrar"];
+    $leaveId = $_GET['e'];
+    $query = "SELECT `employee_leave`.*, `users`.`first_name`, `users`.`last_name`, `departments`.`name` 
+      FROM `employee_leave` JOIN`users` JOIN `departments` WHERE `employee_leave`.`id`='$leaveId' AND 
+      `users`.`id` = `employee_leave`.`user_id` AND `departments`.`id` = `users`.`department_id`";
+    $result = $conn->query($query);
+  }
+?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -30,95 +43,189 @@
       <div class="row">
         <div class="col-10 mx-auto">
           <!-- View Employee Leave Detail -->
-          <div class="row pt-4">
+          <div class="row pt-4 pb-5">
             <div class="col-10 mx-auto">
-              <div class="card shadow-lg border-0">
-                <div class="card-header">
-                  <h3>
-                    Weekend - Jane Mikel
-                    <div class="float-right">
-                      <button class="btn btn-outline-success btn-sm ml-2 py-0 ">
-                        APPROVE
-                      </button>
-                      <button class="btn btn-outline-danger btn-sm ml-2 py-0">
-                        DISAPPROVE
-                      </button>
+              <?php if (($result->num_rows > 0)): $row = $result->fetch_assoc();?>
+                <div class="card shadow-lg border-0">
+                  <div class="card-header">
+                    <h3>
+                      <?php echo $row["purpose"] . " - " . $row["first_name"] . " " . $row["last_name"]?>
+                      <?php if ($row["approval_status"] === NULL): ?>
+                        <?php if (($_SESSION["can_forward_to_director"] == 1) && ($row["to_director"] == 0)): ?>
+                          <div class="float-right">
+                            <button class="btn btn-outline-dark btn-sm ml-2 py-0 ">
+                              FORWARD TO DIRECTOR
+                            </button>
+                          </div>
+                        <?php elseif (($_SESSION["can_forward_to_registrar"] == 1) && ($row["to_registrar"] == 0)): ?>
+                          <div class="float-right">
+                            <button class="btn btn-outline-dark btn-sm ml-2 py-0 ">
+                              FORWARD TO REGISTRAR
+                            </button>
+                          </div>
+                        <?php else: ?>
+                          <div class="float-right">
+                          <button class="btn btn-outline-success btn-sm ml-2 py-0 ">
+                            APPROVE
+                          </button>
+                          <button class="btn btn-outline-danger btn-sm ml-2 py-0">
+                            DISAPPROVE
+                          </button>
+                        </div>
+                        <?php endif ?>
+                      <?php endif ?>
+                    </h3>
+                  </div>
+                  <div class="card-body">
+                    <div class="row py-1">
+                      <h4 class="col-6">Application Date</h4>
+                      <h4 class="col-6">
+                        <span class="font-weight-light">
+                          <?php echo date('d-M-Y', strtotime($row['application_date'])); ?>
+                        </span>
+                      </h4>
                     </div>
-                  </h3>
+                    <div class="row py-1">
+                      <h4 class="col-6">Employee</h4>
+                      <h4 class="col-6">
+                        <span class="font-weight-light"><?php echo $row["first_name"] . " " . $row["last_name"]?></span>
+                      </h4>
+                    </div>
+                    <div class="row py-1">
+                      <h4 class="col-6">Purpose</h4>
+                      <h4 class="col-6">
+                        <span class="font-weight-light"><?php echo $row["purpose"]?></span>
+                      </h4>
+                    </div>
+                    <?php if (!empty($row["extra_information"])): ?>
+                      <div class="row py-1">
+                        <h4 class="col-6">Extra Information</h4>
+                        <h4 class="col-6">
+                          <span class="font-weight-light"><?php echo $row["extra_information"] ?></span>
+                        </h4>
+                      </div>
+                    <?php endif ?>
+                    <div class="row py-1">
+                      <h4 class="col-6">Department</h4>
+                      <h4 class="col-6">
+                        <span class="font-weight-light"><?php echo $row["name"] ?></span>
+                      </h4>
+                    </div>
+                    <div class="row py-1">
+                      <h4 class="col-6">Period</h4>
+                      <h4 class="col-6">
+                        <span class="font-weight-light">
+                          <?php
+                            $start = date_create($row["start_date"]);
+                            $stop = date_create($row["stop_date"]);
+                            echo date_diff($stop, $start)->format("%a Days");
+                          ?>
+                        </span>
+                      </h4>
+                    </div>
+                    <div class="row py-1">
+                      <h4 class="col-6">Leave Starts</h4>
+                      <h4 class="col-6">
+                        <span class="font-weight-light">
+                          <?php echo date('d-M-Y', strtotime($row['start_date'])); ?>
+                        </span>
+                      </h4>
+                    </div>
+                    <div class="row py-1">
+                      <h4 class="col-6">Leave Ends</h4>
+                      <h4 class="col-6">
+                        <span class="font-weight-light">
+                          <?php echo date('d-M-Y', strtotime($row['stop_date'])); ?>
+                        </span>
+                      </h4>
+                    </div>
+                    <div class="row py-1">
+                      <h4 class="col-6">Forwarded to Director</h4>
+                      <h4 class="col-6">
+                        <span class="font-weight-light">
+                          <?php
+                            switch ($row["to_director"]) {
+                              case NULL:
+                              case '0':
+                                echo 'No';
+                                break;
+                              case '1':
+                                echo 'Yes';
+                                break;
+                            }
+                          ?>
+                        </span>
+                      </h4>
+                    </div>
+                    <div class="row py-1">
+                      <h4 class="col-6">Forwarded to Registrar</h4>
+                      <h4 class="col-6">
+                        <span class="font-weight-light">
+                          <?php
+                            switch ($row["to_registrar"]) {
+                              case NULL:
+                              case '0':
+                                echo 'No';
+                                break;
+                              case '1':
+                                echo 'Yes';
+                                break;
+                            }
+                          ?>
+                        </span>
+                      </h4>
+                    </div>
+                    <div class="row py-1">
+                      <h4 class="col-6">Approval Status</h4>
+                      <h4 class="col-6">
+                        <?php
+                          switch ($row["approval_status"]) {
+                            case NULL:
+                              echo '<span class="badge badge-warning font-weight-light">Pending</span>';
+                              break;
+                            case '0':
+                              echo '<span class="badge badge-danger font-weight-light">Disapproved</span>';
+                              break;
+                            case '1':
+                              echo '<span class="badge badge-success font-weight-light">Approved</span>';
+                              break;
+                          }
+                        ?>
+                      </h4>
+                    </div>
+                    <div class="row py-1">
+                      <h4 class="col-6">Approval Date</h4>
+                      <h4 class="col-6">
+                        <span class="font-weight-light">
+                          <?php
+                            switch ($row["approval_date"]) {
+                              case NULL:
+                                echo '<span class="badge badge-warning font-weight-light">Pending</span>';
+                                break;
+                              default:
+                                echo date('d-M-Y', strtotime($row['approval_date']));
+                                break;
+                            }
+                          ?>
+                        </span>
+                      </h4>
+                    </div>
+                  </div>
                 </div>
-                <div class="card-body">
-                  <div class="row py-1">
-                    <h4 class="col-6">Application Date</h4>
-                    <h4 class="col-6">
-                      <span class="font-weight-light">02-Aug-2019 </span>
-                    </h4>
-                  </div>
-                  <div class="row py-1">
-                    <h4 class="col-6">Purpose</h4>
-                    <h4 class="col-6">
-                      <span class="font-weight-light">Weekend</span>
-                    </h4>
-                  </div>
-                  <div class="row py-1">
-                    <h4 class="col-6">Employee</h4>
-                    <h4 class="col-6">
-                      <span class="font-weight-light">Jane Mikel</span>
-                    </h4>
-                  </div>
-                  <div class="row py-1">
-                    <h4 class="col-6">Employee</h4>
-                    <h4 class="col-6">
-                      <span class="font-weight-light">Computer Science</span>
-                    </h4>
-                  </div>
-                  <div class="row py-1">
-                    <h4 class="col-6">Weekend</h4>
-                    <h4 class="col-6">
-                      <span class="font-weight-light">2 Days</span>
-                    </h4>
-                  </div>
-                  <div class="row py-1">
-                    <h4 class="col-6">Leave Starts</h4>
-                    <h4 class="col-6">
-                      <span class="font-weight-light">10-Aug-2019 </span>
-                    </h4>
-                  </div>
-                  <div class="row py-1">
-                    <h4 class="col-6">Leave Ends</h4>
-                    <h4 class="col-6">
-                      <span class="font-weight-light">12-Aug-2019 </span>
-                    </h4>
-                  </div>
-                  <div class="row py-1">
-                    <h4 class="col-6">Forwarded to Director</h4>
-                    <h4 class="col-6">
-                      <span class="font-weight-light">Yes</span>
-                    </h4>
-                  </div>
-                  <div class="row py-1">
-                    <h4 class="col-6">Forwarded to Registrar</h4>
-                    <h4 class="col-6">
-                      <span class="font-weight-light">Yes</span>
-                    </h4>
-                  </div>
-                  <div class="row py-1">
-                    <h4 class="col-6">Approval Status</h4>
-                    <h4 class="col-6">
-                      <span class="badge badge-warning">
-                        Pending
-                      </span>
-                    </h4>
-                  </div>
-                  <div class="row py-1">
-                    <h4 class="col-6">Approval Date</h4>
-                    <h4 class="col-6">
-                      <span class="badge badge-warning">
-                        Pending
-                      </span>
-                    </h4>
-                  </div>
+              <?php else: ?>
+                <div class="col-12 mt-5 text-center">
+                  <h1 class="text-dark display-1">404</h1>
+                  <p class="lead pb-3">We can't seem to find the page you're looking for.</p>
+                  <ul class="list-inline">
+                    <a class="btn btn-outline-dark btn-sm mx-1 text-dark list-inline-item" href="dashboard.php">
+                      Dashboard
+                    </a>
+                    <a class="btn btn-outline-dark btn-sm mx-1 text-dark list-inline-item" href="employees.php">
+                      Employees
+                    </a>
+                  </ul>
                 </div>
-              </div>
+              <?php endif ?>
             </div>
           </div>
         </div>

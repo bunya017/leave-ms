@@ -4,7 +4,14 @@
   if (isset($_SESSION["isLoggedIn"]) and ($_SESSION["isLoggedIn"] === TRUE)) {
     $staffPin = $_SESSION['staff_pin'];
     $userId = $_SESSION['user_id'];
-    $query = "SELECT `employee_leave`.*, `users`.`first_name`, `users`.`last_name` FROM `employee_leave` JOIN `users` WHERE `users`.`id`=`employee_leave`.`user_id`";
+    if ($_SESSION["role"] === "head_ict") {
+      $query = "SELECT `employee_leave`.*, `users`.`first_name`, `users`.`last_name` FROM `employee_leave` JOIN `users` WHERE `users`.`id`=`employee_leave`.`user_id`";
+    } elseif ($_SESSION["role"] === "director") {
+      $query = "SELECT `employee_leave`.*, `users`.`first_name`, `users`.`last_name` FROM `employee_leave` JOIN `users` WHERE `users`.`id`=`employee_leave`.`user_id` AND `employee_leave`.`to_director`='1'";
+    } elseif ($_SESSION["role"] === "registrar") {
+      $query = "SELECT `employee_leave`.*, `users`.`first_name`, `users`.`last_name` FROM `employee_leave` JOIN `users` WHERE `users`.`id`=`employee_leave`.`user_id` AND `employee_leave`.`to_director`='1' AND 
+        `employee_leave`.`to_registrar`='1'";
+    }
     $result = $conn->query($query);
     if (($result->num_rows > 0)){
       $index = 0;

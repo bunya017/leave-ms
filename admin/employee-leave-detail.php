@@ -2,13 +2,38 @@
   session_start();
   require("../config.php");
   if (isset($_SESSION["isLoggedIn"]) and ($_SESSION["isLoggedIn"] === TRUE)) {
-    $can_forward_to_director = $_SESSION["can_forward_to_director"];
-    $can_forward_to_registrar = $_SESSION["can_forward_to_registrar"];
     $leaveId = $_GET['e'];
     $query = "SELECT `employee_leave`.*, `users`.`first_name`, `users`.`last_name`, `departments`.`name` 
       FROM `employee_leave` JOIN`users` JOIN `departments` WHERE `employee_leave`.`id`='$leaveId' AND 
       `users`.`id` = `employee_leave`.`user_id` AND `departments`.`id` = `users`.`department_id`";
     $result = $conn->query($query);
+    if (isset($_POST["toDirector"])) {
+      $toDirectorQuery = "UPDATE `employee_leave` SET to_director='1' WHERE `employee_leave`.`id`='$leaveId'";
+      if ($conn->query($toDirectorQuery) === TRUE) {
+        $_POST = NULL;
+        header("location: employee-leave-detail.php?e=" . $leaveId);
+      }
+    } elseif (isset($_POST["toRegistrar"])) {
+      $toRegistrarQuery = "UPDATE `employee_leave` SET to_registrar='1' WHERE `employee_leave`.`id`='$leaveId'";
+      if ($conn->query($toRegistrarQuery) === TRUE) {
+        $_POST = NULL;
+        header("location: employee-leave-detail.php?e=" . $leaveId);
+      }
+    } elseif (isset($_POST["registrarApprove"])) {
+      $now = date_format(date_create("now"), "Y-m-d");
+      $registrarApproveQuery = "UPDATE `employee_leave` SET approval_status='1', approval_date='$now' WHERE `employee_leave`.`id`='$leaveId'";
+      if ($conn->query($registrarApproveQuery) === TRUE) {
+        $_POST = NULL;
+        header("location: employee-leave-detail.php?e=" . $leaveId);
+      }
+    } elseif (isset($_POST["registrarDisapprove"])) {
+      $now = date_format(date_create("now"), "Y-m-d");
+      $registrarDisapproveQuery = "UPDATE `employee_leave` SET approval_status='0', approval_date='$now' WHERE `employee_leave`.`id`='$leaveId'";
+      if ($conn->query($registrarDisapproveQuery) === TRUE) {
+        $_POST = NULL;
+        header("location: employee-leave-detail.php?e=" . $leaveId);
+      }
+    }
   }
 ?>
 <!DOCTYPE html>
@@ -45,36 +70,38 @@
           <!-- View Employee Leave Detail -->
           <div class="row pt-4 pb-5">
             <div class="col-10 mx-auto">
-              <?php if (($result->num_rows > 0)): $row = $result->fetch_assoc();?>
+              <?php if (($result->num_rows > 0)): $row = $result->fetch_assoc(); ?>
                 <div class="card shadow-lg border-0">
                   <div class="card-header">
-                    <h3>
-                      <?php echo $row["purpose"] . " - " . $row["first_name"] . " " . $row["last_name"]?>
-                      <?php if ($row["approval_status"] === NULL): ?>
-                        <?php if (($_SESSION["can_forward_to_director"] == 1) && ($row["to_director"] == 0)): ?>
-                          <div class="float-right">
-                            <button class="btn btn-outline-dark btn-sm ml-2 py-0 ">
-                              FORWARD TO DIRECTOR
+                    <form method="post">
+                      <h3>
+                        <?php echo $row["purpose"] . " - " . $row["first_name"] . " " . $row["last_name"]?>
+                        <?php if ($row["approval_status"] === NULL): ?>
+                          <?php if (($_SESSION["can_forward_to_director"] == 1) && ($row["to_director"] == 0)): ?>
+                            <div class="float-right">
+                              <button name="toDirector" class="btn btn-outline-dark btn-sm ml-2 py-0">
+                                FORWARD TO DIRECTOR
+                              </button>
+                            </div>
+                          <?php elseif (($_SESSION["can_forward_to_registrar"] == 1) && ($row["to_registrar"] == 0)  && ($row["to_director"] == 1)): ?>
+                            <div class="float-right">
+                              <button name="toRegistrar" class="btn btn-outline-dark btn-sm ml-2 py-0">
+                                FORWARD TO REGISTRAR
+                              </button>
+                            </div>
+                          <?php elseif (($_SESSION["role"] === "registrar") && ($row["to_director"] == 1)  && ($row["to_registrar"] == 1)): ?>
+                            <div class="float-right">
+                            <button  name="registrarApprove" class="btn btn-outline-success btn-sm ml-2 py-0">
+                              APPROVE
+                            </button>
+                            <button  name="registrarDisapprove" class="btn btn-outline-danger btn-sm ml-2 py-0">
+                              DISAPPROVE
                             </button>
                           </div>
-                        <?php elseif (($_SESSION["can_forward_to_registrar"] == 1) && ($row["to_registrar"] == 0)): ?>
-                          <div class="float-right">
-                            <button class="btn btn-outline-dark btn-sm ml-2 py-0 ">
-                              FORWARD TO REGISTRAR
-                            </button>
-                          </div>
-                        <?php else: ?>
-                          <div class="float-right">
-                          <button class="btn btn-outline-success btn-sm ml-2 py-0 ">
-                            APPROVE
-                          </button>
-                          <button class="btn btn-outline-danger btn-sm ml-2 py-0">
-                            DISAPPROVE
-                          </button>
-                        </div>
+                          <?php endif ?>
                         <?php endif ?>
-                      <?php endif ?>
-                    </h3>
+                      </h3>
+                    </form>
                   </div>
                   <div class="card-body">
                     <div class="row py-1">

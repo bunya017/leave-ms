@@ -1,7 +1,10 @@
+<?php
+  session_start();
+?>
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Login</title>
+    <title>Reset your password</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
     <link rel="stylesheet" href="static/css/bootstrap.min.css">
@@ -11,7 +14,7 @@
   </head>
   <body>
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-      <a class="navbar-brand ml-5" href="">
+      <a class="navbar-brand ml-5" href="index.php">
         Leave MS
       </a>
     </nav>
@@ -32,7 +35,7 @@
                       <input type="email" name="email" required="" class="form-control">
                     </div>
                     <div class="py-3">
-                      <button class="col-12 btn btn-dark">
+                      <button class="col-12 btn btn-dark" name="resetPassword">
                         SEND PASSWORD RESET EMAIL
                       </button>
                     </div>

@@ -2,6 +2,7 @@
   session_start();
   require("../config.php");
   require("../auth.php");
+  require("../permissions.php");
   if (isset($_SESSION["isLoggedIn"]) and ($_SESSION["isLoggedIn"] === TRUE)) {
     $query = "SELECT * FROM `departments`";
     $result = $conn->query($query);

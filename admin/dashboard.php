@@ -2,6 +2,7 @@
   session_start();
   require("../config.php");
   require("../auth.php");
+  require("../permissions.php");
   if (isset($_SESSION["isLoggedIn"]) and ($_SESSION["isLoggedIn"] === TRUE)) {
     $staffPin = $_SESSION['staff_pin'];
     $userId = $_SESSION['user_id'];

@@ -2,6 +2,7 @@
   session_start();
   require("../config.php");
   require("../auth.php");
+  require("../permissions.php");
   if (isset($_SESSION["isLoggedIn"]) and ($_SESSION["isLoggedIn"] === TRUE)) {
     $staff = $_GET['e'];
     $query = "SELECT * FROM `users` JOIN `departments` WHERE users.staff_pin='$staff' AND departments.id=users.department_id";

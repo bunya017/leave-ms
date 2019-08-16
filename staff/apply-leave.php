@@ -79,14 +79,7 @@
     <script src="../static/js/bootstrap.min.js"></script>
   </head>
   <body>
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-      <a class="navbar-brand ml-auto" href="dashboard.php">Leave MS</a>
-      <ul class="navbar-nav offset-md-8 offset-1 mr-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="profile.php">My profile</a>
-        </li>
-      </ul>
-    </nav>
+    <?php include('../includes/staff_nav.php'); ?>
     <div class="container">
       <div class="row">
         <div class="col-12 col-md-8 mx-auto">

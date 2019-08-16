@@ -1,6 +1,7 @@
 <?php
   session_start();
   require("../config.php");
+  require("../auth.php");
   if (isset($_SESSION["isLoggedIn"]) and ($_SESSION["isLoggedIn"] === TRUE)) {
     $leaveId = $_GET['e'];
     $query = "SELECT * FROM `employee_leave` WHERE id='$leaveId'";

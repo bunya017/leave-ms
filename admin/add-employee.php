@@ -1,6 +1,7 @@
 <?php
   session_start();
   require("../config.php");
+  require("../auth.php");
   if (isset($_SESSION["isLoggedIn"]) and ($_SESSION["isLoggedIn"] === TRUE)) {
     $query = "SELECT * FROM `departments`";
     $result = $conn->query($query);
@@ -22,24 +23,24 @@
       }
     }
     if (isset($_POST["addEmployee"], $_POST["staff_pin"], $_POST["department"], $_POST["email"], $_POST["first_name"], $_POST["last_name"])) {
-    $staff_pin = stripcslashes($_POST["staff_pin"]);
-    $department = stripcslashes($_POST["department"]);
-    $email = stripcslashes($_POST["email"]);
-    $first_name = stripcslashes($_POST["first_name"]);
-    $last_name = stripcslashes($_POST["last_name"]);
-    $staff_role = 1;
-    $password = password_hash("password1234", PASSWORD_DEFAULT);
-    $query = "INSERT into `users` (staff_pin, email, password, department_id, first_name, last_name, role_id) VALUES ('$staff_pin', '$email', '$password', '$department', '$first_name', '$last_name', '$staff_role')";
-    if ($conn->query($query) === TRUE) {
-      $_SESSION["employeeCreated"] = true;
-      $_POST = NULL;
-      header("location: employees.php");
-    } elseif (strpos($conn->error, "'staff_pin'") > 0) {
-      $_SESSION["staffPinDupError"] = true;
-    } elseif (strpos($conn->error, "'email'") > 0) {
-      $_SESSION["staffEmailDupError"] = true;
+      $staff_pin = stripcslashes($_POST["staff_pin"]);
+      $department = stripcslashes($_POST["department"]);
+      $email = stripcslashes($_POST["email"]);
+      $first_name = stripcslashes($_POST["first_name"]);
+      $last_name = stripcslashes($_POST["last_name"]);
+      $staff_role = 1;
+      $password = password_hash("password1234", PASSWORD_DEFAULT);
+      $query = "INSERT into `users` (staff_pin, email, password, department_id, first_name, last_name, role_id) VALUES ('$staff_pin', '$email', '$password', '$department', '$first_name', '$last_name', '$staff_role')";
+      if ($conn->query($query) === TRUE) {
+        $_SESSION["employeeCreated"] = true;
+        $_POST = NULL;
+        header("location: employees.php");
+      } elseif (strpos($conn->error, "'staff_pin'") > 0) {
+        $_SESSION["staffPinDupError"] = true;
+      } elseif (strpos($conn->error, "'email'") > 0) {
+        $_SESSION["staffEmailDupError"] = true;
+      }
     }
-  }
   }
 ?>
 <!DOCTYPE html>

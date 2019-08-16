@@ -14,6 +14,9 @@
         <li class="nav-item">
           <a class="nav-link" href="departments.php">Departments</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="../logout.php">Logout</a>
+        </li>
       </ul>
     </nav>
   ';

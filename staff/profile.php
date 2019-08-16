@@ -1,7 +1,7 @@
 <?php
   session_start();
   require("../config.php");
-  require("../auth.php");
+  require("../auth/auth.php");
   if (isset($_SESSION["isLoggedIn"]) and ($_SESSION["isLoggedIn"] === TRUE)) {
     $staff = $_SESSION['staff_pin'];
     $query = "SELECT * FROM `users` JOIN `departments` WHERE `users`.`staff_pin`='$staff' AND `departments`.`id`=`users`.`department_id`";

@@ -3,10 +3,14 @@
   require("../config.php");
   if (isset($_SESSION["isLoggedIn"]) and ($_SESSION["isLoggedIn"] === TRUE)) {
     $leaveId = $_GET['e'];
-    $query = "SELECT `employee_leave`.*, `users`.`first_name`, `users`.`last_name`, `departments`.`name` 
-      FROM `employee_leave` JOIN`users` JOIN `departments` WHERE `employee_leave`.`id`='$leaveId' AND 
-      `users`.`id` = `employee_leave`.`user_id` AND `departments`.`id` = `users`.`department_id`";
+    $query = "SELECT `employee_leave`.*, `users`.`first_name`, `users`.`last_name`, `users`.`staff_pin`,
+    `users`.`leave_days_left`, `departments`.`name` FROM `employee_leave` JOIN`users` JOIN 
+    `departments` WHERE `employee_leave`.`id`='$leaveId' AND  `users`.`id`=`employee_leave`.`user_id`
+    AND  `departments`.`id`=`users`.`department_id`";
     $result = $conn->query($query);
+    if (($result->num_rows > 0)){
+      $row = $result->fetch_assoc();
+    }
     if (isset($_POST["toDirector"])) {
       $toDirectorQuery = "UPDATE `employee_leave` SET to_director='1' WHERE `employee_leave`.`id`='$leaveId'";
       if ($conn->query($toDirectorQuery) === TRUE) {
@@ -21,11 +25,20 @@
       }
     } elseif (isset($_POST["registrarApprove"])) {
       $now = date_format(date_create("now"), "Y-m-d");
+      $start = date_create($row["start_date"]);
+      $stop = date_create($row["stop_date"]);
+      $leavePeriod = date_diff($stop, $start)->format("%a");
+      $newLeaveDaysLeft = $row["leave_days_left"] - $leavePeriod;
+      $staffPin = $row["staff_pin"];
+      $conn->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
       $registrarApproveQuery = "UPDATE `employee_leave` SET approval_status='1', approval_date='$now' WHERE `employee_leave`.`id`='$leaveId'";
-      if ($conn->query($registrarApproveQuery) === TRUE) {
-        $_POST = NULL;
-        header("location: employee-leave-detail.php?e=" . $leaveId);
-      }
+      $changeLeaveDaysQuery = "UPDATE `users` SET leave_days_left='$newLeaveDaysLeft' WHERE
+        `users`.`staff_pin`='$staffPin'";
+      $conn->query($registrarApproveQuery);
+      $conn->query($changeLeaveDaysQuery);
+      $conn->commit();
+      $_POST = NULL;
+      header("location: employee-leave-detail.php?e=" . $leaveId);
     } elseif (isset($_POST["registrarDisapprove"])) {
       $now = date_format(date_create("now"), "Y-m-d");
       $registrarDisapproveQuery = "UPDATE `employee_leave` SET approval_status='0', approval_date='$now' WHERE `employee_leave`.`id`='$leaveId'";
@@ -70,7 +83,7 @@
           <!-- View Employee Leave Detail -->
           <div class="row pt-4 pb-5">
             <div class="col-10 mx-auto">
-              <?php if (($result->num_rows > 0)): $row = $result->fetch_assoc(); ?>
+              <?php if (!empty($row)): ?>
                 <div class="card shadow-lg border-0">
                   <div class="card-header">
                     <form method="post">

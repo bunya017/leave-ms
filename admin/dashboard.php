@@ -39,22 +39,7 @@
     <script src="../static/js/bootstrap.min.js"></script>
   </head>
   <body>
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-      <a class="navbar-brand ml-auto" href="">
-        Leave MS <span class="badge badge-info">Admin</span>
-      </a>
-      <ul class="navbar-nav offset-md-6 offset-1 mr-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="employees.php">Employees</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="">Leave Applications</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="departments.php">Departments</a>
-        </li>
-      </ul>
-    </nav>
+    <?php include('../includes/admin_nav.php'); ?>
     <div class="container">
       <!-- Employee Leave section -->
       <div class="row py-4">

@@ -111,7 +111,7 @@
                     <form method="post">
                       <div class="form-group">
                         <label>Purpose:</label>
-                        <input type="text" name="purpose" value="<?php if(isset($_POST['purpose'])){echo($_POST['purpose']);} ?>" class="form-control">
+                        <input type="text" required="" name="purpose" value="<?php if(isset($_POST['purpose'])){echo($_POST['purpose']);} ?>" class="form-control">
                         <?php
                           // Catch empty field error
                           if (isset($_SESSION["purposeError"]) && ($_SESSION["purposeError"] === TRUE)) {

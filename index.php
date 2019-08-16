@@ -1,3 +1,51 @@
+<?php
+  session_start();
+  require("config.php");
+  if (isset($_POST["submit"])) {
+    if (empty($_POST["email"]) === TRUE) {
+      $_SESSION["emailError"] = true;
+      session_destroy();
+    } elseif (empty($_POST["password"]) === TRUE) {
+      $_SESSION["passwordError"] = true;
+      session_destroy();
+    } elseif (isset($_POST["email"]) === TRUE and isset($_POST["email"]) === TRUE) {
+      $email = stripcslashes($_POST["email"]);
+      $password = stripcslashes($_POST["password"]);
+      $query = "SELECT * FROM `users` WHERE email='$email'";
+      $result = $conn->query($query);
+      if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        if (password_verify($password, $row["password"]) === TRUE) {
+          $_SESSION["first_name"] = $row["first_name"];
+          $_SESSION["last_name"] = $row["last_name"];
+          $_SESSION["staff_pin"] = $row["staff_pin"];
+          $_SESSION["user_id"] = $row["id"];
+          $_SESSION["isLoggedIn"] = true;
+          $role_id = $row["role_id"];
+          $role_sql = "SELECT * FROM `roles` WHERE id='$role_id'";
+          $role_query = $conn->query($role_sql);
+          $role_row = $role_query->fetch_assoc();
+          $_SESSION["role"] = $role_row["name"];
+          $_SESSION["can_forward_to_director"] = $role_row["can_forward_to_director"];
+          $_SESSION["can_forward_to_registrar"] = $role_row["can_forward_to_registrar"];
+          if ($role_row["name"] === "staff") {
+            header("location: staff/dashboard.php");
+          } elseif ($role_row["name"] === "director" or "registrar" or "head_ict") {
+            header("location: admin/dashboard.php");
+          } else {
+            echo $conn->connect_error . "<br>";
+          }
+        } else {
+          $_SESSION["loginError"] = true;
+          session_destroy();
+        }
+      } else {
+        $_SESSION["loginError"] = true;
+        session_destroy();
+      }
+    }
+  }
+?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -10,54 +58,6 @@
     <script src="static/js/bootstrap.min.js"></script>
   </head>
   <body>
-    <?php
-      session_start();
-      require("config.php");
-      if (isset($_POST["submit"])) {
-        if (empty($_POST["email"]) === TRUE) {
-          $_SESSION["emailError"] = true;
-          session_destroy();
-        } elseif (empty($_POST["password"]) === TRUE) {
-          $_SESSION["passwordError"] = true;
-          session_destroy();
-        } elseif (isset($_POST["email"]) === TRUE and isset($_POST["email"]) === TRUE) {
-          $email = stripcslashes($_POST["email"]);
-          $password = stripcslashes($_POST["password"]);
-          $query = "SELECT * FROM `users` WHERE email='$email'";
-          $result = $conn->query($query);
-          if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            if (password_verify($password, $row["password"]) === TRUE) {
-              $_SESSION["first_name"] = $row["first_name"];
-              $_SESSION["last_name"] = $row["last_name"];
-              $_SESSION["staff_pin"] = $row["staff_pin"];
-              $_SESSION["user_id"] = $row["id"];
-              $_SESSION["isLoggedIn"] = true;
-              $role_id = $row["role_id"];
-              $role_sql = "SELECT * FROM `roles` WHERE id='$role_id'";
-              $role_query = $conn->query($role_sql);
-              $role_row = $role_query->fetch_assoc();
-              $_SESSION["role"] = $role_row["name"];
-              $_SESSION["can_forward_to_director"] = $role_row["can_forward_to_director"];
-              $_SESSION["can_forward_to_registrar"] = $role_row["can_forward_to_registrar"];
-              if ($role_row["name"] === "staff") {
-                header("location: staff/dashboard.php");
-              } elseif ($role_row["name"] === "director" or "registrar" or "head_ict") {
-                header("location: admin/dashboard.php");
-              } else {
-                echo $conn->connect_error . "<br>";
-              }
-            } else {
-              $_SESSION["loginError"] = true;
-              session_destroy();
-            }
-          } else {
-            $_SESSION["loginError"] = true;
-            session_destroy();
-          }
-        }
-      }
-    ?>
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
       <a class="navbar-brand ml-5" href="">
         Leave MS

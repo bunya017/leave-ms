@@ -1,3 +1,29 @@
+<?php
+  session_start();
+  require("config.php");
+  $email = stripcslashes($_GET["email"]);
+  $token = stripcslashes(($_GET["token"]));
+  $action = stripcslashes($_GET["action"]);
+  $query = "SELECT * FROM `password_reset` WHERE token='$token' AND email='$email'";
+  $result = $conn->query($query);
+  if (($result->num_rows > 0) && ($action == "reset")) {
+    if (isset($_POST["resetPassword"])) {
+      $pass1 = stripcslashes($_POST["password1"]);
+      $pass2 = stripcslashes($_POST["password2"]);
+      if (empty($pass1)) {
+        $_SESSION["pass1Empty"] = true;
+      }
+      if (empty($pass2)) {
+        $_SESSION["pass2Empty"] = true;
+      }
+      if ($pass1 != $pass2) {
+        $_SESSION["passNotMatch"] = true;
+      }
+    }
+  } else {
+    $_SESSION["invalidLink"] = true;
+  }
+?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -29,11 +55,28 @@
                   <form class="pt-4" method="post">
                     <div class="form-group">
                       <label>New password:</label>
-                      <input type="email" name="email" required="" class="form-control">
+                      <input type="password" name="password1" required="" value="<?php if (isset($_POST['password1'])) {echo($_POST['password1']);} ?>" class="form-control">
+                      <?php
+                        // Catch empty field error
+                        if (isset($_SESSION["pass1Empty"]) && ($_SESSION["pass1Empty"] === true)) {
+                          echo '<small class="text-danger"><strong>This field is required!</strong></small>';
+                          $_SESSION["pass1Empty"] = NULL;
+                        }
+                      ?>
                     </div>
                     <div class="form-group">
                       <label>Confirm new password:</label>
-                      <input type="email" name="email" required="" class="form-control">
+                      <input type="password" name="password2" required="" value="<?php if (isset($_POST['password2'])) {echo($_POST['password2']);} ?>" class="form-control">
+                      <?php
+                        // Catch empty field error
+                        if (isset($_SESSION["pass2Empty"]) && ($_SESSION["pass2Empty"] === true)) {
+                          echo '<small class="text-danger"><strong>This field is required!</strong></small>';
+                          $_SESSION["pass2Empty"] = NULL;
+                        } elseif (isset($_SESSION["passNotMatch"]) && ($_SESSION["passNotMatch"] === true)) {
+                          echo '<small class="text-danger"><strong>Passwords do not match!<br>Both passwords must be the same</strong></small>';
+                          $_SESSION["passNotMatch"] = NULL;
+                        }
+                      ?>
                     </div>
                     <div class="py-3">
                       <button class="col-12 btn btn-dark" name="resetPassword">

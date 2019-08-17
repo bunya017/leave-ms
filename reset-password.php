@@ -41,7 +41,6 @@
     }
   } else {
     $_SESSION["invalidLink"] = true;
-    echo "Invalid link";
   }
 ?>
 <!DOCTYPE html>
@@ -63,47 +62,56 @@
     </nav>
     <div class="container">
       <div class="row py-5">
-        <div class="col-5 mx-auto">
+        <div class="col-6 mx-auto">
           <div class="card border-0 shadow-lg">
             <div class="card-body">
               <div class="row pb-5 pt-4">
                 <div class="col-11 mx-auto">
-                  <div class="text-center">
-                    <h3>Reset your password</h3>
-                    <small>Please enter (and confirm) your new password..</small>
-                  </div>
-                  <form class="pt-4" method="post">
-                    <div class="form-group">
-                      <label>New password:</label>
-                      <input type="password" name="password1" required="" value="<?php if (isset($_POST['password1'])) {echo($_POST['password1']);} ?>" class="form-control">
-                      <?php
-                        // Catch empty field error
-                        if (isset($_SESSION["pass1Empty"]) && ($_SESSION["pass1Empty"] === true)) {
-                          echo '<small class="text-danger"><strong>This field is required!</strong></small>';
-                          $_SESSION["pass1Empty"] = NULL;
-                        }
-                      ?>
+                  <?php if (!isset($_SESSION["invalidLink"])): ?>
+                    <div class="text-center">
+                      <h3>Reset your password</h3>
+                      <small>Please enter (and confirm) your new password.</small>
                     </div>
-                    <div class="form-group">
-                      <label>Confirm new password:</label>
-                      <input type="password" name="password2" required="" value="<?php if (isset($_POST['password2'])) {echo($_POST['password2']);} ?>" class="form-control">
-                      <?php
-                        // Catch empty field error
-                        if (isset($_SESSION["pass2Empty"]) && ($_SESSION["pass2Empty"] === true)) {
-                          echo '<small class="text-danger"><strong>This field is required!</strong></small>';
-                          $_SESSION["pass2Empty"] = NULL;
-                        } elseif (isset($_SESSION["passNotMatch"]) && ($_SESSION["passNotMatch"] === true)) {
-                          echo '<small class="text-danger"><strong>Passwords do not match!<br>Both passwords must be the same</strong></small>';
-                          $_SESSION["passNotMatch"] = NULL;
-                        }
-                      ?>
+                    <form class="pt-3" method="post">
+                      <div class="form-group">
+                        <label>New password:</label>
+                        <input type="password" name="password1" required="" value="<?php if (isset($_POST['password1'])) {echo($_POST['password1']);} ?>" class="form-control">
+                        <?php
+                          // Catch empty field error
+                          if (isset($_SESSION["pass1Empty"]) && ($_SESSION["pass1Empty"] === true)) {
+                            echo '<small class="text-danger"><strong>This field is required!</strong></small>';
+                            $_SESSION["pass1Empty"] = NULL;
+                          }
+                        ?>
+                      </div>
+                      <div class="form-group">
+                        <label>Confirm new password:</label>
+                        <input type="password" name="password2" required="" value="<?php if (isset($_POST['password2'])) {echo($_POST['password2']);} ?>" class="form-control">
+                        <?php
+                          // Catch empty field error
+                          if (isset($_SESSION["pass2Empty"]) && ($_SESSION["pass2Empty"] === true)) {
+                            echo '<small class="text-danger"><strong>This field is required!</strong></small>';
+                            $_SESSION["pass2Empty"] = NULL;
+                          } elseif (isset($_SESSION["passNotMatch"]) && ($_SESSION["passNotMatch"] === true)) {
+                            echo '<small class="text-danger"><strong>Passwords do not match!<br>Both passwords must be the same</strong></small>';
+                            $_SESSION["passNotMatch"] = NULL;
+                          }
+                        ?>
+                      </div>
+                      <div class="py-3">
+                        <button class="col-12 btn btn-dark" name="resetPassword">
+                          RESET PASSWORD 
+                        </button>
+                      </div>
+                    </form>
+                  <?php else: ?>
+                    <div>
+                      <h3 class="pb-5 text-center text-danger">Password Reset Failed!</h3>
+                      <p>The password reset link is invalid, possibly because it has already been used or it has expired.</p>
+                      <p>Please request a new password reset.</p>
+                      <a class="btn btn-outLine-dark btn-sm" href="forgot-password.php">RESET PASSWORD</a>
                     </div>
-                    <div class="py-3">
-                      <button class="col-12 btn btn-dark" name="resetPassword">
-                        RESET PASSWORD 
-                      </button>
-                    </div>
-                  </form>
+                  <?php endif ?>
                 </div>
               </div>
             </div>

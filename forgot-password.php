@@ -1,5 +1,27 @@
 <?php
   session_start();
+  require("config.php");
+  if (isset($_POST["resetPassword"])) {
+    $email = stripcslashes($_POST["email"]);
+    $emailQuery= "SELECT * FROM `users` WHERE email='$email'";
+    $result = $conn->query($emailQuery);
+    if ($result->num_rows > 0) {
+      $expiry_date = date(
+        "Y-m-d H:i:s", mktime(date("H"), date("i"), date("s"), date("m"), date("d")+1, date("Y"))
+      );
+      $token = sha1($email . date_format(date_create("now"), "Y-m-d H:i:s"));
+      $query = "INSERT into `password_reset` (email, token, expiry_date) VALUES
+        ('$email', '$token', '$expiry_date')";
+      if ($conn->query($query) === TRUE) {
+        echo "localhost/leave-ms/reset-password.php?token=" . $token . "&email=" . $email . "&action=reset";
+        $_POST = NULL;
+      } else {
+        echo "<br>" . $conn->error;
+      }
+    } else {
+      header("location: forgot-password-done.php");
+    }
+  }
 ?>
 <!DOCTYPE html>
 <html>
@@ -29,7 +51,7 @@
                     <h3>Reset your password</h3>
                     <small>Enter your email address and we will send you a link to reset your password.</small>
                   </div>
-                  <form class="pt-4">
+                  <form class="pt-4" method="post">
                     <div class="form-group">
                       <label>Email:</label>
                       <input type="email" name="email" required="" class="form-control">

@@ -18,10 +18,30 @@
       }
       if ($pass1 != $pass2) {
         $_SESSION["passNotMatch"] = true;
+      } elseif (isset($_POST["password1"], $_POST["password2"])) {
+        $row = $result->fetch_assoc();
+        $expiry_date = date_create($row["expiry_date"]);
+        $now = date_create("now");
+        if ($now < $expiry_date) {
+          $password = password_hash($pass1, PASSWORD_DEFAULT);
+          $conn->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
+          $updatePasswordQuery = "UPDATE `users` SET password='$password' WHERE email='$email";
+          $passwordResetQuery = "DELETE FROM `password_reset` WHERE token='$token' AND email='$email";
+          $conn->query($updatePasswordQuery);
+          $conn->query($passwordResetQuery);
+          $conn->commit();
+          $_POST = NULL;
+          $_SESSION["passChanged"] = true;
+          echo "Password Changed!";
+        } else {
+          $_SESSION["expiredLink"] = true;
+          echo "Expired";
+        }
       }
     }
   } else {
     $_SESSION["invalidLink"] = true;
+    echo "Invalid link";
   }
 ?>
 <!DOCTYPE html>

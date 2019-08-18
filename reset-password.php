@@ -4,7 +4,8 @@
   $email = stripcslashes($_GET["email"]);
   $token = stripcslashes(($_GET["token"]));
   $action = stripcslashes($_GET["action"]);
-  $query = "SELECT * FROM `password_reset` WHERE token='$token' AND email='$email'";
+  $now = date_format(date_create("now"), "Y-m-d H:i:s");
+  $query = "SELECT * FROM `password_reset` WHERE token='$token' AND email='$email' AND expiry_date>='$now'";
   $result = $conn->query($query);
   if (($result->num_rows > 0) && ($action == "reset")) {
     if (isset($_POST["resetPassword"])) {
@@ -18,25 +19,6 @@
       }
       if ($pass1 != $pass2) {
         $_SESSION["passNotMatch"] = true;
-      } elseif (isset($_POST["password1"], $_POST["password2"])) {
-        $row = $result->fetch_assoc();
-        $expiry_date = date_create($row["expiry_date"]);
-        $now = date_create("now");
-        if ($now < $expiry_date) {
-          $password = password_hash($pass1, PASSWORD_DEFAULT);
-          $conn->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
-          $updatePasswordQuery = "UPDATE `users` SET password='$password' WHERE email='$email";
-          $passwordResetQuery = "DELETE FROM `password_reset` WHERE token='$token' AND email='$email";
-          $conn->query($updatePasswordQuery);
-          $conn->query($passwordResetQuery);
-          $conn->commit();
-          $_POST = NULL;
-          $_SESSION["passChanged"] = true;
-          echo "Password Changed!";
-        } else {
-          $_SESSION["expiredLink"] = true;
-          echo "Expired";
-        }
       }
     }
   } else {
@@ -104,12 +86,14 @@
                         </button>
                       </div>
                     </form>
-                  <?php else: ?>
-                    <div>
-                      <h3 class="pb-5 text-center text-danger">Password Reset Failed!</h3>
+                  <?php else: $_SESSION["invalidLink"] = NULL; ?>
+                    <div class="py-3">
+                      <h2 class="text-center">Password Reset Failed!</h2>
+                    </div>
+                    <div class="pt-2">
                       <p>The password reset link is invalid, possibly because it has already been used or it has expired.</p>
                       <p>Please request a new password reset.</p>
-                      <a class="btn btn-outLine-dark btn-sm" href="forgot-password.php">RESET PASSWORD</a>
+                      <a class="btn btn-dark btn-sm" href="forgot-password.php">RESET PASSWORD</a>
                     </div>
                   <?php endif ?>
                 </div>

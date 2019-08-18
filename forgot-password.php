@@ -20,7 +20,12 @@
         if ($conn->query($deleteQuery) === TRUE) {
           if ($conn->query($query) === TRUE) {
             $_POST = NULL;
-            echo "localhost/leave-ms/reset-password.php?token=" . $token . "&email=" . $email . "&action=reset";
+            $msg = "You have requested a password reset for your Leave-MS account.\n";
+            $msg .= "Follow the link below to set a new password:\n\n";
+            $msg .= "localhost/leave-ms/reset-password.php?token=" . $token . "&email=" . $email . "&action=reset";
+            $msg .= "\n\nIf you don't wish to reset your password, disregard this email and no action will be taken.";
+            mail($email, "Reset your Leavse-MS password", $msg);
+            header("location: forgot-password-done.php");
           }
         }
       }

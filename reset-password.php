@@ -19,6 +19,16 @@
       }
       if ($pass1 != $pass2) {
         $_SESSION["passNotMatch"] = true;
+      } elseif (isset($_POST["password1"], $_POST["password2"]) && ($pass1 === $pass2)) {
+        $password = password_hash($pass1, PASSWORD_DEFAULT);
+        $updatePasswordQuery = "UPDATE `users` SET password='$password' WHERE email='$email'";
+        if ($conn->query($updatePasswordQuery) === TRUE) {
+          $_POST = NULL;
+          $passwordResetQuery = "DELETE FROM `password_reset` WHERE email='$email'"; // Delete PassReset entry
+          if ($conn->query($passwordResetQuery) === TRUE) {
+            header("location: reset-password-done.php");
+          }
+        }
       }
     }
   } else {

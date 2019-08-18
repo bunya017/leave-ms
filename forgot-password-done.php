@@ -24,7 +24,7 @@
                   <div class="py-3">
                     <h2 class="text-center">We have sent you an email!</h2>
                   </div>
-                  <div class="pt-4">
+                  <div class="pt-2">
                     <p>We've emailed you instructions for resetting your password. If an account exists with the email you entered, you should receive them shortly.</p>
                     <p>If you don't receive an email, please make sure you've entered the address you registered with, and check your spam folder.</p>
                   </div>

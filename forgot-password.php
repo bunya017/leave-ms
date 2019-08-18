@@ -13,10 +13,16 @@
       $query = "INSERT into `password_reset` (email, token, expiry_date) VALUES
         ('$email', '$token', '$expiry_date')";
       if ($conn->query($query) === TRUE) {
-        echo "localhost/leave-ms/reset-password.php?token=" . $token . "&email=" . $email . "&action=reset";
         $_POST = NULL;
-      } else {
-        echo "<br>" . $conn->error;
+        echo "localhost/leave-ms/reset-password.php?token=" . $token . "&email=" . $email . "&action=reset";
+      } elseif (strpos($conn->error, "'email'") > 0) {
+        $deleteQuery = "DELETE FROM `password_reset` WHERE email='$email'";
+        if ($conn->query($deleteQuery) === TRUE) {
+          if ($conn->query($query) === TRUE) {
+            $_POST = NULL;
+            echo "localhost/leave-ms/reset-password.php?token=" . $token . "&email=" . $email . "&action=reset";
+          }
+        }
       }
     } else {
       header("location: forgot-password-done.php");

@@ -108,6 +108,7 @@
                         LOGIN
                       </button>
                     </div>
+                    <a href="forgot-password.php">Forgot password?</a>
                   </form>
                 </div>
               </div>

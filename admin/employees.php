@@ -63,7 +63,6 @@
                   <th>Added on</th>
                   <th>Status</th>
                   <th></th>
-                  <th></th>
                 </tr>
               </thead>
               <tbody>
@@ -83,7 +82,6 @@
                       echo '<td><span class="badge badge-danger">Inactive</span></td>';
                     }
                     echo '<td><a class="btn btn-outline-dark btn-sm" href="employee-profile.php?e=' . $employee['staff_pin'] . '">VIEW</a></td>';
-                    echo '<td class="px-0"><button class="btn btn-outline-danger"><i class="fa fa-trash"></i></button class="btn btn-outline-danger"></td>';
                     echo '</tr>';
                   }
                 ?>

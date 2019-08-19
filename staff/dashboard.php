@@ -7,7 +7,7 @@
     $userId = $_SESSION['user_id'];
     $query = "SELECT * FROM `users` JOIN `employee_leave` WHERE `users`.`staff_pin`='$staffPin' AND `employee_leave`.`user_id`='$userId'";
     $result = $conn->query($query);
-    if (($result->num_rows > 0)){
+    if ($result->num_rows > 0){
       $staffRow = $result->fetch_assoc();
       $approved = 0;
       $disapproved = 0;
@@ -56,6 +56,12 @@
             break;
         }
       }
+    } else {
+      $userQuery = "SELECT * FROM `users` WHERE staff_pin='$staffPin'";
+      $userResult = $conn->query($userQuery);
+      if ($userResult->num_rows > 0){
+        $staff = $userResult->fetch_assoc();
+      }
     }
   }
 ?>
@@ -84,7 +90,8 @@
             <div class="col-12 col-sm-6 col-lg-3 py-2 py-lg-0">
               <div class="card shadow-lg" style="min-height: 100px;">
                 <div class="text-center py-3">
-                  <h2><?php echo $staff["leave_days_left"] ?> <i class="fa fa-door-open"></i></h2>
+                  <h2><?php echo $staff["leave_days_left"] ?>
+                  <i class="fa fa-door-open"></i></h2>
                   <h6><?php echo "Leave Days Left of " . $staff["total_leave_days"] ?></h6>
                 </div>
               </div>
@@ -92,7 +99,7 @@
             <div class="col-12 col-sm-6 col-lg-3 py-2 py-lg-0">
               <div class="card shadow-lg" style="min-height: 100px;">
                 <div class="text-center py-3">
-                  <h2 class="text-success"><?php echo $approved ?> <i class="fa fa-door-open"></i></h2>
+                  <h2 class="text-success"><?php if(!empty($approved)){echo $approved;}else{echo "0";} ?>  <i class="fa fa-door-open"></i></h2>
                   <h6>Leave Approved</h6>
                 </div>
               </div>
@@ -100,7 +107,7 @@
             <div class="col-12 col-sm-6 col-lg-3 py-2 py-lg-0">
               <div class="card shadow-lg" style="min-height: 100px;">
                 <div class="text-center py-3">
-                  <h2 class="text-warning"><?php echo $pending ?> <i class="fa fa-door-open"></i></h2>
+                  <h2 class="text-warning"><?php if(!empty($pending)){echo $pending;}else{echo "0";} ?> <i class="fa fa-door-open"></i></h2>
                   <h6>Leave Pending Approval</h6>
                 </div>
               </div>
@@ -108,7 +115,7 @@
             <div class="col-12 col-sm-6 col-lg-3 py-2 py-lg-0">
               <div class="card shadow-lg" style="min-height: 100px;">
                 <div class="text-center py-3">
-                  <h2 class="text-danger"><?php echo $disapproved ?> <i class="fa fa-door-open"></i></h2>
+                  <h2 class="text-danger"><?php if(!empty($disapproved)){echo $disapproved;}else{echo "0";} ?> <i class="fa fa-door-open"></i></h2>
                   <h6>Disapproved Leave</h6>
                 </div>
               </div>
@@ -140,65 +147,71 @@
 
           <!-- Leave list -->
           <div class="row">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Applictaion Date</th>
-                  <th>Purpose</th>
-                  <th>Period</th>
-                  <th>Approval Date</th>
-                  <th>Approval Status</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <?php foreach ($leave_applications as $leave_application): ++$index; ?>
+            <?php if (!empty($leave_applications)): ?>
+              <table class="table">
+                <thead>
                   <tr>
-                    <td><?php echo $index; ?></td>
-                    <td><?php echo date('d-M-Y', strtotime($leave_application['application_date'])); ?></td>
-                    <td><?php echo $leave_application["purpose"]; ?></td>
-                    <td>
-                      <?php
-                        $start = date_create($leave_application["start_date"]);
-                        $stop = date_create($leave_application["stop_date"]);
-                        echo date_diff($stop, $start)->format("%a Days");
-                      ?>
-                    </td>
-                    <td>
-                      <?php
-                        switch ($leave_application["approval_date"]) {
-                          case NULL:
-                            echo '<span class="badge badge-warning">Pending</span>';
-                            break;
-                          default:
-                            echo date('d-M-Y', strtotime($leave_application['approval_date']));
-                            break;
-                        }
-                      ?>
-                    </td>
-                    <td>
-                      <?php
-                        switch ($leave_application["approval_status"]) {
-                          case NULL:
-                            echo '<span class="badge badge-warning">Pending</span>';
-                            break;
-                          case '0':
-                            echo '<span class="badge badge-danger">Disapproved</span>';
-                            break;
-                          case '1':
-                            echo '<span class="badge badge-success">Approved</span>';
-                            break;
-                        }
-                      ?>
-                    </td>
-                    <td>
-                      <a class="btn btn-outline-dark btn-sm" href="<?php echo 'leave-detail.php?e=' . $leave_application['id'] ?>">VIEW</a>
-                    </td>
+                    <th>#</th>
+                    <th>Applictaion Date</th>
+                    <th>Purpose</th>
+                    <th>Period</th>
+                    <th>Approval Date</th>
+                    <th>Approval Status</th>
+                    <th></th>
                   </tr>
-                <?php endforeach ?>
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  <?php foreach ($leave_applications as $leave_application): ++$index; ?>
+                    <tr>
+                      <td><?php echo $index; ?></td>
+                      <td><?php echo date('d-M-Y', strtotime($leave_application['application_date'])); ?></td>
+                      <td><?php echo $leave_application["purpose"]; ?></td>
+                      <td>
+                        <?php
+                          $start = date_create($leave_application["start_date"]);
+                          $stop = date_create($leave_application["stop_date"]);
+                          echo date_diff($stop, $start)->format("%a Days");
+                        ?>
+                      </td>
+                      <td>
+                        <?php
+                          switch ($leave_application["approval_date"]) {
+                            case NULL:
+                              echo '<span class="badge badge-warning">Pending</span>';
+                              break;
+                            default:
+                              echo date('d-M-Y', strtotime($leave_application['approval_date']));
+                              break;
+                          }
+                        ?>
+                      </td>
+                      <td>
+                        <?php
+                          switch ($leave_application["approval_status"]) {
+                            case NULL:
+                              echo '<span class="badge badge-warning">Pending</span>';
+                              break;
+                            case '0':
+                              echo '<span class="badge badge-danger">Disapproved</span>';
+                              break;
+                            case '1':
+                              echo '<span class="badge badge-success">Approved</span>';
+                              break;
+                          }
+                        ?>
+                      </td>
+                      <td>
+                        <a class="btn btn-outline-dark btn-sm" href="<?php echo 'leave-detail.php?e=' . $leave_application['id'] ?>">VIEW</a>
+                      </td>
+                    </tr>
+                  <?php endforeach ?>
+                </tbody>
+              </table>
+            <?php else: ?>
+              <div class="col-12 py-4 text-center">
+                <p class="lead large">You have 0 leave applications, please click the 'APPLY FOR LEAVE' button to get started.</p>
+              </div>
+            <?php endif ?>
           </div>
         </div>
       </div>
@@ -207,6 +220,10 @@
   <style>
     body {
       background-color: #f4f3f4 !important;
+    }
+
+    .large {
+      font-size: 1.75em;
     }
   </style>
 </html>

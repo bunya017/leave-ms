@@ -3,6 +3,7 @@
   require("../config.php");
   require("../auth/auth.php");
   require("../auth/permissions.php");
+  require("../auth/admin-permissions.php");
   if (isset($_SESSION["isLoggedIn"]) and ($_SESSION["isLoggedIn"] === TRUE)) {
     $query = "SELECT * FROM `users` JOIN `departments` WHERE departments.id=users.department_id";
     $result = $conn->query($query);

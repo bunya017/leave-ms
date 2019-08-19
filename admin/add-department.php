@@ -3,6 +3,7 @@
   require("../config.php");
   require("../auth/auth.php");
   require("../auth/permissions.php");
+  require("../auth/admin-permissions.php");
   if (isset($_SESSION["isLoggedIn"]) and ($_SESSION["isLoggedIn"] === TRUE)) {
     if (isset($_POST["addDepartment"])) {
       if ((empty($_POST["name"]) === TRUE) and (empty($_POST["shortCode"]) === TRUE)) {

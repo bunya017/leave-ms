@@ -25,12 +25,12 @@
           $role_sql = "SELECT * FROM `roles` WHERE id='$role_id'";
           $role_query = $conn->query($role_sql);
           $role_row = $role_query->fetch_assoc();
-          $_SESSION["role"] = $role_row["name"];
+          $_SESSION["role"] = $role_row["role"];
           $_SESSION["can_forward_to_director"] = $role_row["can_forward_to_director"];
           $_SESSION["can_forward_to_registrar"] = $role_row["can_forward_to_registrar"];
-          if ($role_row["name"] === "staff") {
+          if ($role_row["role"] === "staff") {
             header("location: staff/dashboard.php");
-          } elseif ($role_row["name"] === "director" or "registrar" or "head_ict") {
+          } elseif ($role_row["role"] === "director" or "registrar" or "head_ict") {
             header("location: admin/dashboard.php");
           } else {
             echo $conn->connect_error . "<br>";

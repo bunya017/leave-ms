@@ -58,11 +58,7 @@
     <script src="static/js/bootstrap.min.js"></script>
   </head>
   <body>
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-      <a class="navbar-brand ml-5" href="">
-        Leave MS
-      </a>
-    </nav>
+    <?php include('includes/home_nav.php'); ?>
     <div class="container">
       <div class="row py-5">
         <div class="col-5 mx-auto">

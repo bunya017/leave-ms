@@ -27,11 +27,12 @@
       <div class="row py-4">
         <div class="col-10 mx-auto">
           <?php
-            if (isset($_SESSION["deptCreated"])) {
-              if ($_SESSION["deptCreated"] === true) {
-                echo '<div class="col-8 mx-auto"><div class="alert alert-success alert-dismissible text-center"><button class="close" data-dismiss="alert">&times;</button>Department added successfully!</div></div>';
-                $_SESSION["deptCreated"] = NULL;
-              }
+            if (isset($_SESSION["deptCreated"]) && ($_SESSION["deptCreated"] === true)) {
+              echo '<div class="col-8 mx-auto"><div class="alert alert-success alert-dismissible text-center"><button class="close" data-dismiss="alert">&times;</button>Department added successfully!</div></div>';
+              $_SESSION["deptCreated"] = NULL;
+            } elseif (isset($_SESSION["deptDeleted"]) && ($_SESSION["deptDeleted"] === true)) {
+              echo '<div class="col-8 mx-auto"><div class="alert alert-success alert-dismissible text-center"><button class="close" data-dismiss="alert">&times;</button>Department deleted successfully!</div></div>';
+              $_SESSION["deptDeleted"] = NULL;
             }
           ?>
           <!-- Title -->
@@ -54,6 +55,7 @@
                   <th>#</th>
                   <th>Name</th>
                   <th>Short Code</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
@@ -63,7 +65,18 @@
                     $index = 0;
                     while ($row = $result->fetch_assoc()) {
                       ++$index;
-                      echo "<tr><td>" . $index . "</td><td>" . $row["name"] . "</td><td>" . $row["short_code"] . "</td></tr>";
+                      echo "<tr>";
+                      echo "<td>" . $index . "</td>";
+                      echo "<td>" . $row["name"] . "</td>";
+                      echo "<td>" . $row["short_code"] . "</td>";
+                      echo '
+                      <td>
+                        <a class="btn btn-outline-danger btn-sm" href="delete-department.php?id=' . $row['id'] . '&sc=' . $row['short_code'] . '">
+                          DELETE
+                        </a>
+                      </td>
+                      ';
+                      echo "</tr>";
                     }
                   }
                 ?>

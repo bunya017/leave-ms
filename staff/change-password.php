@@ -24,7 +24,11 @@
             if ($conn->query($changePasswordQuery) === TRUE) {
               $_SESSION["passwordChanged"] = true;
               $_POST = NULL;
-              header("location: profile.php");
+              if ($_SESSION["role"] === "staff") {
+                header("location: profile.php");
+              } else {
+                header("location: ../admin/dashboard.php");
+              }
             }
           } else {
             $_SESSION["wrongPassError"] = true;
@@ -37,7 +41,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Edit Profile</title>
+    <title>Change Password</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
     <link rel="stylesheet" href="../static/css/bootstrap.min.css">
@@ -46,7 +50,11 @@
     <script src="../static/js/bootstrap.min.js"></script>
   </head>
   <body>
-    <?php include('../includes/staff_nav.php'); ?>
+    <?php
+    if ($_SESSION["role"] === "staff") {
+      include('../includes/staff_nav.php');
+    }
+    ?>
     <div class="container">
       <div class="row">
         <div class="col-12 col-md-8 mx-auto">
@@ -93,9 +101,21 @@
                     </div>
                     <!-- Modal footer -->
                     <div class="modal-footer border-0">
-                      <a class="btn btn-outline-secondary" href="profile.php">
-                        CANCEL
-                      </a>
+                      <?php
+                        if ($_SESSION["role"] === "staff") {
+                          echo '
+                          <a class="btn btn-outline-secondary" href="profile.php">
+                            CANCEL
+                          </a>
+                          ';
+                        } else {
+                          echo '
+                          <a class="btn btn-outline-secondary" href="../admin/dashboard.php">
+                            CANCEL
+                          </a>
+                          ';
+                        }
+                      ?>
                       <button class="btn btn-dark" name="changePassword">
                         CHANGE PASSWORD
                       </button>

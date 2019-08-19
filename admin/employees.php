@@ -5,7 +5,7 @@
   require("../auth/permissions.php");
   require("../auth/admin-permissions.php");
   if (isset($_SESSION["isLoggedIn"]) and ($_SESSION["isLoggedIn"] === TRUE)) {
-    $query = "SELECT * FROM `users` JOIN `departments` WHERE departments.id=users.department_id";
+    $query = "SELECT * FROM `users` JOIN `departments` WHERE `departments`.`id`=`users`.`department_id`";
     $result = $conn->query($query);
     while ($row = $result->fetch_assoc()) {
       $employeeList[] = array(
@@ -48,6 +48,9 @@
               if (isset($_SESSION["employeeCreated"]) && ($_SESSION["employeeCreated"] === TRUE)) {
                 echo '<div class="col-8 mx-auto"><div class="alert alert-success alert-dismissible text-center"><button type="button" class="close" data-dismiss="alert">&times;</button>Employee added successfully!</div></div>';
                 $_SESSION["employeeCreated"] = NULL;
+              } elseif (isset($_SESSION["employeeDeleted"]) && ($_SESSION["employeeDeleted"] === TRUE)) {
+                echo '<div class="col-8 mx-auto"><div class="alert alert-success alert-dismissible text-center"><button type="button" class="close" data-dismiss="alert">&times;</button>Employee deleted successfully!</div></div>';
+                $_SESSION["employeeDeleted"] = NULL;
               }
             ?>
           </div>
@@ -63,6 +66,7 @@
                   <th>Department</th>
                   <th>Added on</th>
                   <th>Status</th>
+                  <th></th>
                   <th></th>
                 </tr>
               </thead>
@@ -83,6 +87,7 @@
                       echo '<td><span class="badge badge-danger">Inactive</span></td>';
                     }
                     echo '<td><a class="btn btn-outline-dark btn-sm" href="employee-profile.php?e=' . $employee['staff_pin'] . '">VIEW</a></td>';
+                    echo '<td><a class="btn btn-outline-danger btn-sm" href="delete-employee.php?e=' . $employee['staff_pin'] . '">DELETE</a></td>';
                     echo '</tr>';
                   }
                 ?>

@@ -44,8 +44,7 @@ CREATE TABLE `departments` (
 
 INSERT INTO `departments` (`id`, `name`, `short_code`) VALUES
 (1, 'Computer Engineering', 'COEN'),
-(2, 'Computer Science', 'COSC'),
-(10, 'Electrical Engineering', 'EEEN');
+(2, 'Computer Science', 'COSC');
 
 --
 -- Indexes for dumped tables

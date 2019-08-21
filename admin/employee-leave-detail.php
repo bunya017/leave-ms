@@ -6,7 +6,7 @@
   if (isset($_SESSION["isLoggedIn"]) and ($_SESSION["isLoggedIn"] === TRUE)) {
     $leaveId = $_GET['e'];
     $query = "SELECT `employee_leave`.*, `users`.`first_name`, `users`.`last_name`, `users`.`staff_pin`,
-    `users`.`leave_days_left`, `departments`.`name` FROM `employee_leave` JOIN`users` JOIN 
+    `users`.`leave_days_left`, `departments`.`name` FROM `employee_leave` JOIN `users` JOIN 
     `departments` WHERE `employee_leave`.`id`='$leaveId' AND  `users`.`id`=`employee_leave`.`user_id`
     AND  `departments`.`id`=`users`.`department_id`";
     $result = $conn->query($query);

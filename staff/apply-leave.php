@@ -4,12 +4,21 @@
   require("../auth/auth.php");
   if (isset($_SESSION["isLoggedIn"]) and ($_SESSION["isLoggedIn"] === TRUE)) {
     $staff_pin = $_SESSION["staff_pin"];
-    $query = "SELECT * FROM `users` WHERE staff_pin='$staff_pin'";
+    $query = "SELECT `users`.*, `leave_types`.* FROM `users` JOIN `leave_types` WHERE
+      `users`.`staff_pin`='$staff_pin'";
     $result = $conn->query($query);
     if ($result->num_rows > 0) {
       $row = $result->fetch_assoc();
       $staffLeaveDays = $row["total_leave_days"];
       $staffLeaveDaysLeft = $row["leave_days_left"];
+      $leaveTypes[] = array('id' => $row['id'], 'leave_type' => $row['leave_type']);
+      $leaveOptions = array();
+      array_push($leaveOptions, $row['leave_type']);
+
+      while ($row = $result->fetch_assoc()) {
+        $leaveTypes[] = array('id' => $row['id'], 'leave_type' => $row['leave_type']);
+        array_push($leaveOptions, $row['leave_type']);
+      }
     }
     if (isset($_POST["applyLeave"])) {
       if (empty($_POST["purpose"])) {
@@ -26,7 +35,7 @@
         $now = date_create("now");
         if ($start > $stop) {
           $_SESSION["negativeDateError"] = true;
-        } elseif ($now > $start) {
+        } elseif (date_create(date_format($now, "Y-m-d")) > date_create(date_format($start, "Y-m-d"))) {
           $_SESSION["startLessThanToday"] = true;
         } elseif ($now > $stop) {
           $_SESSION["stopLessThanToday"] = true;
@@ -47,11 +56,13 @@
       } elseif (($interval > $staffLeaveDaysLeft) && ($staffLeaveDaysLeft < $staffLeaveDays)) {
         $_SESSION["aboveLeaveDaysLeftError"] = true;
       } elseif ($start > $stop) {
-          $_SESSION["negativeDateError"] = true;
-      } elseif ($now > $start) {
+        $_SESSION["negativeDateError"] = true;
+      } elseif (date_create(date_format($now, "Y-m-d")) > date_create(date_format($start, "Y-m-d"))) {
         $_SESSION["startLessThanToday"] = true;
       } elseif ($now > $stop) {
         $_SESSION["stopLessThanToday"] = true;
+      } elseif (!in_array($_POST["purpose"], $leaveOptions)) {
+        $_SESSION["invalidPurpose"] = true;
       } else {
         if (isset($_POST["extra_information"]) && (!empty($_POST["extra_information"]))) {
           $extra_information = htmlspecialchars($_POST['extra_information'], ENT_QUOTES);
@@ -105,12 +116,26 @@
                     <form method="post">
                       <div class="form-group">
                         <label>Purpose:</label>
-                        <input type="text" required="" name="purpose" value="<?php if(isset($_POST['purpose'])){echo($_POST['purpose']);} ?>" class="form-control">
+                        <select class="form-control" required="" name="purpose">
+                          <option value="">-- Choose Leave Purpose --</option>
+                          <?php
+                            foreach ($leaveTypes as $leaveType) {
+                              if (isset($_POST['purpose']) && ($_POST['purpose'] === $leaveType["leave_type"])) {
+                                echo '<option selected="" value="' . $leaveType["leave_type"] . '">' . $leaveType["leave_type"] . '</option>';
+                              } else {
+                                echo '<option value="' . $leaveType["leave_type"] . '">' . $leaveType["leave_type"] . '</option>';
+                              }
+                            }
+                          ?>
+                        </select>
                         <?php
                           // Catch empty field error
                           if (isset($_SESSION["purposeError"]) && ($_SESSION["purposeError"] === TRUE)) {
                             echo '<small class="text-danger"><strong>This field is required!</strong></small>';
                             $_SESSION["purposeError"] = NULL;
+                          } elseif (isset($_SESSION["invalidPurpose"]) && ($_SESSION["invalidPurpose"] === TRUE)) {
+                            echo '<small class="text-danger"><strong>The leave purpose "' . $_POST["purpose"] . '" is invalid!</strong></small>';
+                            $_SESSION["invalidPurpose"] = NULL;
                           }
                         ?>
                       </div>

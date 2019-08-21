@@ -59,7 +59,7 @@
                       <form method="post">
                         <div class="form-group">
                           <label>Name:</label>
-                          <input type="text" name="name" value="<?php if (isset($_POST['name'])) {echo($_POST['name']);} ?>"class="form-control">
+                          <input type="text" name="name" required="" value="<?php if (isset($_POST['name'])) {echo($_POST['name']);} ?>"class="form-control">
                           <?php
                             if (isset($_SESSION["deptNameError"])) {
                               // Catch empty field error
@@ -76,7 +76,7 @@
                         </div>
                         <div class="form-group">
                           <label>Short Code:</label>
-                          <input type="text" name="shortCode" value="<?php if (isset($_POST['shortCode'])) {echo($_POST['shortCode']);} ?>" class="form-control">
+                          <input type="text" name="shortCode" required="" value="<?php if (isset($_POST['shortCode'])) {echo($_POST['shortCode']);} ?>" class="form-control">
                           <?php
                             if (isset($_SESSION["shortCodeError"])) {
                               // Catch empty field error
